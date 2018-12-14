@@ -1,0 +1,79 @@
+.phoebe-body {
+    margin-top: 10px;
+    padding-right: 2%;
+
+    .phoebe-ctrl {
+        display: flex;
+        &.filter-ctrl {
+            width: 100%;
+            .ctrl-container { justify-content: space-around;}
+        }
+
+        .ctrl-live {
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            margin-right: 7px; 
+            cursor: pointer;
+            .ctrl-btn { 
+                width: 10px;
+                height: 10px;
+                background: @phoebe;
+                border-radius: 50%;
+                margin: 10px;
+                transition: 0.5s all ease;
+            }
+            &:hover {
+                .ctrl-btn { width: 30px; height: 30px; margin: 0px; }
+            }
+        }
+        .ctrl-container {
+            border-radius: 50px;
+            flex: 1;
+            border: 1px solid rgba(50,50,50,0.5);
+            display: flex;
+            flex-direction: row;
+            overflow-x: hidden;
+            padding: 5px 30px;
+            white-space: nowrap;
+            box-shadow: inset 0px 0px 20px 1px rgba(0,0,0,0.5);
+            .ctrl-item { 
+                display: inline-block; 
+                margin: 1px 7px; 
+                cursor: pointer;
+                transition: 0.5s all ease;
+                padding: 0px 7px;
+                border-radius: 50px;
+
+                &.active { 
+                    font-weight: bold; 
+                    opacity: 0.5;
+                    border-left: 2px solid @phoebe;
+                    border-right: 2px solid @phoebe;
+                }
+                &:hover { color: @phoebe; }
+            }
+        }
+    }
+
+    .hex-view-container {
+        text-align: center;
+        .phoebe-view {
+            width: 50%;
+            display: inline-block;
+            margin: 15px 0px 15%;
+            .hexBody{
+                .phoebe(background, 0.4);
+                .hex-body-container {
+                    text-align: left;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+
+                    .active { visibility: visible; position: relative; width: 100%; z-index: 10;}
+                    .inactive { visibility: hidden; position: absolute; z-index: -1;}
+                }
+            }
+        }
+    }
+}
