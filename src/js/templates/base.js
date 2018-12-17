@@ -26,13 +26,6 @@ class Base extends Component{
         dataLibrary:{}
       };
 
-      this.jConnect = {
-         currUser: "T3stUser2",
-         coreUrlBase: 'http://localhost:1003',
-         urlBase: 'http://localhost:1003/jNetwork',
-         conList: {},
-         localSock: null
-      };
 
       this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
       this.changeSelectedChar = this.changeSelectedChar.bind(this);
@@ -40,13 +33,12 @@ class Base extends Component{
 
       this.characterList = {
          "gerald": new characterModel("Gerald", null, <Gerald />, "Gerald home screen"),
-         "fuzzyslippers": new characterModel("FuzzySlippers", null, <FuzzySlippers />, "FuzzySlippers bot system"),
+         "fuzzyslippers": new characterModel("FuzzySlippers", null, null, "FuzzySlippers bot system"),
          "arnold": new characterModel("Arnold", null, null, "Arnold client system info"),
          "helga" : new characterModel("Helga", null, null, "Helga maps system"),
-         "phoebe": new characterModel("Phoebe", null, <Phoebe jConnect={this.jConnect}/>, "Phoebe image processing"),
+         "phoebe": new characterModel("Phoebe", null, <Phoebe jConnect={this.props.jConnect} jUser={this.props.jUser}/>, "Phoebe image processing"),
          "sid"   : new characterModel("Sid", null, null, "Sid events and information")
       };
-
    }
 
    onSetSidebarOpen(open) {
@@ -65,7 +57,7 @@ class Base extends Component{
    joinNetwork(){
       var self = this;
       try {
-          let connectSrc = new EventSource(self.jConnect.urlBase +'/connect/'+self.jConnect.currUser);
+          let connectSrc = new EventSource(self.props.jConnect.urlBase +'/connect/'+self.props.jUser.userId);
 
           connectSrc.onmessage = function(e){
               var jdata = JSON.parse(e.data);
@@ -116,7 +108,7 @@ class Base extends Component{
          console.log("Debug: Updated Connection List");
          for(var i=0; i < newList.length; i++){
             if(self.conList && !(newList[i].connectionId in self.conList)){
-                  self.jConnect.conList[newList[i].connectionId] = newList[i];
+                  self.props.jConnect.conList[newList[i].connectionId] = newList[i];
             }
          }
       }

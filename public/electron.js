@@ -10,7 +10,7 @@ let mainWindow;
 function createWindow() {
     mainWindow = new BrowserWindow({width: 1100, height: 800, webPreferences: { webSecurity: false}});
     // Dev Tools
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
   

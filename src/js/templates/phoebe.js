@@ -16,7 +16,7 @@ class Phoebe extends Component{
             videoFilter: 'live'
         }
 
-        this.filterList = {"faceRecognition":true, "faceMark": true};
+        this.filterList = {"faceRecognition":true, "faceMark": true, "edgeDetect":true};
         this.liveVideo = null;
         this.liveSnapshot = null;
 
@@ -31,7 +31,9 @@ class Phoebe extends Component{
         var self = this;
         try {
             if(self.props.jConnect.localSock == null){
-                self.props.jConnect.localSock = socketIOClient(self.props.jConnect.coreUrlBase, {query: "userid="+ self.props.jConnect.currUser});
+                var socketQuery = "userid="+ self.props.jUser.userId +"&token="+self.props.jUser.token;
+
+                self.props.jConnect.localSock = socketIOClient(self.props.jConnect.coreUrlBase, {query: socketQuery});
                 self.state.imgObj = document.getElementById("filterVideo");
                 // On socket connection
                 self.props.jConnect.localSock.on('direct connection', function(res){
@@ -56,7 +58,7 @@ class Phoebe extends Component{
                     <div className="ctrl-live" onClick={() => this.toggleLiveVideo(false, true)}><div className="ctrl-btn"></div></div>
                     <div className="ctrl-container">
                         {this.state.sourceList.map((item, i) =>
-                            <div className={"ctrl-item" + (this.state.mainSrc == item.name ? " active" : "")} key={i}onClick={() => this.changeVideoSrc(item)}>{item.name}</div>
+                            <div className={"ctrl-item" + (this.state.mainSrc === item.name ? " active" : "")} key={i}onClick={() => this.changeVideoSrc(item)}>{item.name}</div>
                         )}
                     </div>
                 </div>                
@@ -77,7 +79,7 @@ class Phoebe extends Component{
                 <div className="phoebe-ctrl filter-ctrl">
                     <div className="ctrl-container">
                         {Object.keys(this.filterList).map((item, i) =>
-                            <div className={"ctrl-item" + (this.state.videoFilter == item ? " active" : "")} key={i}onClick={() => this.toggleSnapShot(item)}>{item}</div>
+                            <div className={"ctrl-item" + (this.state.videoFilter === item ? " active" : "")} key={i}onClick={() => this.toggleSnapShot(item)}>{item}</div>
                         )}
                     </div>
                 </div>    
@@ -151,6 +153,8 @@ class Phoebe extends Component{
             else {
                 self.liveVideo.stop();
                 clearInterval(self.liveSnapshot);
+                const video = document.querySelector('video');
+                video.srcObject = null;
                 self.setState({ mainSrc: null });
             }
         }
@@ -191,7 +195,7 @@ class Phoebe extends Component{
         try {
             if(self.liveSnapshot != null){
                 clearInterval(self.liveSnapshot);
-                self.liveVideo = null;
+                self.liveSnapshot = null;
                 
                 if(filter === self.state.videoFilter){
                     self.setState({ videoFilter: 'live' });
@@ -207,14 +211,14 @@ class Phoebe extends Component{
                         var tmpSnapShot = self.getSnapShot();                        
                         // Send Snap to Jada
                         var dataMsg = {
-                            "rId":self.state.jConnect.currUser, 
+                            "rId":self.props.jUser.userId, 
                             "command":"pheobeView", 
                             "filter":filter, 
                             "filterStatus":true, 
                             "data":tmpSnapShot
                         };
 
-                        self.props.jConnect.localSock.emit('direct connection', {"sID":self.props.jConnect.currUser, "data":dataMsg});
+                        self.props.jConnect.localSock.emit('direct connection', {"sID":self.props.jUser.userId, "data":dataMsg});
                     }, 180);
                 }
             }

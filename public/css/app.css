@@ -91,6 +91,152 @@
   position: absolute;
   z-index: -1;
 }
+.login-body {
+  padding: 0px 2%;
+}
+.login-body h1 {
+  text-align: center;
+}
+.login-body .login-ctrl {
+  text-align: center;
+}
+.login-body .login-ctrl .ctrl-live {
+  border-radius: 50%;
+  display: inline-flex;
+  margin-right: 7px;
+  cursor: pointer;
+  border: 2px solid #323232;
+}
+.login-body .login-ctrl .ctrl-live .ctrl-btn {
+  width: 10px;
+  height: 10px;
+  background: #323232;
+  border-radius: 50%;
+  margin: 10px;
+  transition: 0.5s all ease;
+}
+.login-body .login-ctrl .ctrl-live:hover .ctrl-btn {
+  width: 30px;
+  height: 30px;
+  margin: 0px;
+}
+.login-body .hex-view-container {
+  text-align: center;
+}
+.login-body .hex-view-container .login-view {
+  width: 35%;
+  display: inline-block;
+  margin: 15px 0px 10%;
+}
+.login-body .hex-view-container .login-view .hexBody {
+  background: rgba(50, 50, 50, 0.4);
+}
+.login-body .hex-view-container .login-view .hexBody .hex-body-container {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.login-body .hex-view-container .login-view .hexBody .hex-body-container .active {
+  visibility: visible;
+  position: relative;
+  width: 100%;
+  z-index: 10;
+}
+.login-body .hex-view-container .login-view .hexBody .hex-body-container .inactive {
+  visibility: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.login-body .hex-view-container .login-view .hexBody .hex-body-container .ctrl-txt {
+  z-index: 15;
+  display: inline-block;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  width: 100%;
+}
+.login-body .hex-view-container .login-view .hexBody .hex-body-container .ctrl-txt.invisible {
+  display: hidden;
+}
+.login-body .form-container {
+  text-align: center;
+  display: none;
+}
+.login-body .form-container.visible {
+  display: block;
+}
+.login-body .form-container .login-form-element {
+  width: 200px;
+  border-radius: 50px;
+  flex: 1;
+  border: 1px solid rgba(50, 50, 50, 0.5);
+  display: inline-flex;
+  flex-direction: row;
+  overflow-x: hidden;
+  padding: 5px 30px;
+  white-space: nowrap;
+  box-shadow: inset 0px 0px 20px 1px rgba(0, 0, 0, 0.5);
+}
+.login-body .form-container .login-form-element label span {
+  padding-right: 5px;
+  margin-right: 10px;
+  border-right: 2px solid rgba(50, 50, 50, 0.5);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.login-body .form-container .login-form-element label input {
+  background: rgba(0, 0, 0, 0);
+  border: none;
+  outline: none;
+}
+.login-body .form-container .btn-container {
+  display: inline-flex;
+  cursor: pointer;
+  opacity: 0.9;
+}
+.login-body .form-container .btn-container .charater-icon {
+  border-radius: 50%;
+  position: relative;
+  padding: 5px;
+  text-align: center;
+  background: rgba(50, 50, 50, 0.7);
+  z-index: 1;
+}
+.login-body .form-container .btn-container .charater-icon .icon-btn {
+  background: #323232;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.login-body .form-container .btn-container .btn-title {
+  margin-left: -20px;
+  height: 100%;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0px 20px 0px 40px;
+  border-radius: 50px;
+  position: relative;
+  background: rgba(50, 50, 50, 0.7);
+}
+.login-body .form-container .btn-container .btn-title::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: -1px;
+  height: 100%;
+  width: 30px;
+  border-radius: 50%;
+  background: rgba(154, 154, 154, 0.5);
+}
+.login-body .form-container + .form-container {
+  margin-top: 10px;
+}
 body,
 html {
   margin: 0px !important;
