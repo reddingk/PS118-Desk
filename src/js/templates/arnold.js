@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
+var si = require('systeminformation');
+var os = require('os');
 
 class Arnold extends Component{
     constructor(props) {
         super(props);
 
         this.state = {
-            testSz: [1,2,3,4,5]
+            testSz: [1,2,3,4,5],
+            systeminfo: null,
+            os:null,
+            battery:null
         }        
     }
-
-   
     
 
     render(){        
@@ -50,7 +53,29 @@ class Arnold extends Component{
     }
 
     componentDidMount(){
-        //let self = this;        
+        let self = this;
+        
+        try{
+            console.log("1] ");
+            self.getAllDesktopData();
+        }
+        catch(ex){
+            console.log(" [Arnold] Error: ", ex);
+        }
+    }
+
+    getAllDesktopData(){
+        try{
+            console.log("2] ");
+            si.getAllData().then((data) =>  {
+                console.log('All-Information:');
+                console.log(data);
+            }).catch(error => console.error(error));
+            console.log("3] ", os.platform(), " | ", os.release());
+        }
+        catch(ex){
+            console.log(" Error getting desktop data: ", ex)
+        }
     }
 }
 
