@@ -13,6 +13,7 @@ import GeraldSideNav from './geraldSidnav';
 import Gerald from './gerald';
 import FuzzySlippers from './fuzzySlippers';
 import Phoebe from './phoebe';
+import Arnold from './arnold';
 
 /* JNetwork Info */
 
@@ -34,7 +35,7 @@ class Base extends Component{
       this.characterList = {
          "gerald": new characterModel("Gerald", null, <Gerald />, "Gerald home screen"),
          "fuzzyslippers": new characterModel("FuzzySlippers", null, null, "FuzzySlippers bot system"),
-         "arnold": new characterModel("Arnold", null, null, "Arnold client system info"),
+         "arnold": new characterModel("Arnold", null, <Arnold />, "Arnold client system info"),
          "helga" : new characterModel("Helga", null, null, "Helga maps system"),
          "phoebe": new characterModel("Phoebe", null, <Phoebe jConnect={this.props.jConnect} jUser={this.props.jUser}/>, "Phoebe image processing"),
          "sid"   : new characterModel("Sid", null, null, "Sid events and information")
@@ -75,7 +76,7 @@ class Base extends Component{
    render(){     
       return(
         <div>
-            <Sidebar sidebar={<GeraldSideNav characterList={this.characterList} selectedChar={this.state.selectedChar} changeSelectedChar={this.changeSelectedChar} />}  open={this.state.sidebarOpen} onSetOpen={this.onSetSidebarOpen} styles={{ sidebar: { background: "rgba(50,50,50,0.95)" } }}>
+            <Sidebar sidebar={<GeraldSideNav characterList={this.characterList} selectedChar={this.state.selectedChar} changeSelectedChar={this.changeSelectedChar} />}  open={this.state.sidebarOpen} onSetOpen={this.onSetSidebarOpen} styles={{ sidebar: { background: "rgba(50,50,50,0.95)", zIndex: 1000 } }}>
                 <div className="main-body">                     
                     <SideNavBtn characterList={this.characterList} selectedChar={this.state.selectedChar} onSetSidebarOpen={this.onSetSidebarOpen}/>                                      
                     { this.renderSwitch(this.state.selectedChar)}
@@ -87,8 +88,9 @@ class Base extends Component{
 
    componentDidMount(){
       this.changeSelectedChar("gerald");
-      this.joinNetwork();
-  }
+      /* [REMOVE] */
+      //this.joinNetwork();
+   }
 
   /* jNetwork Functions */
   commander(cmd,data){

@@ -67,9 +67,9 @@
   text-align: center;
 }
 .phoebe-body .hex-view-container .phoebe-view {
-  width: 50%;
+  width: 47%;
   display: inline-block;
-  margin: 15px 0px 15%;
+  margin: 15px 0px 12%;
 }
 .phoebe-body .hex-view-container .phoebe-view .hexBody {
   background: rgba(252, 205, 4, 0.4) !important;
@@ -264,7 +264,7 @@ html {
   background: rgba(255, 255, 255, 0.5);
 }
 .ps118-body .content-body .main-body {
-  padding: 2% 0px 2% 2%;
+  padding: 60px 0px 2% 2%;
 }
 /* Hex Object */
 .hex {
@@ -441,6 +441,22 @@ html {
     margin-left: 25%;
   }
 }
+.hex-grid .grid-row {
+  width: max-content;
+  margin: 0 auto;
+  font-size: 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-bottom: 8.4%;
+}
+.hex-grid .grid-row + .grid-row {
+  margin-left: 137.5px;
+  margin-top: -8.4%;
+}
+.hex-grid .grid-row .hex {
+  display: inline-block;
+  width: 275px;
+}
 /* Side Nav*/
 .sidenav-container {
   display: flex;
@@ -455,8 +471,11 @@ html {
 /* Side Nav Btn */
 .nav-btn-container {
   height: 50px;
-  position: relative;
+  position: fixed;
   display: flex;
+  z-index: 100;
+  left: 2%;
+  top: 2%;
 }
 .nav-btn-container .btn-container {
   display: flex;
@@ -504,6 +523,10 @@ html {
   padding: 0px 20px 0px 60px;
   border-radius: 50px;
   position: relative;
+  transition: 0.7s all ease;
+}
+.nav-btn-container .btn-container .btn-title:hover {
+  margin-left: -33px;
 }
 .nav-btn-container .btn-container .btn-title::before {
   content: "";
@@ -518,20 +541,45 @@ html {
 .nav-btn-container .btn-container .btn-title.gerald {
   background: rgba(230, 38, 37, 0.7) !important;
 }
+.nav-btn-container .btn-container .btn-title.gerald:hover {
+  background: rgba(230, 38, 37, 0.8) !important;
+}
 .nav-btn-container .btn-container .btn-title.arnold {
   background: rgba(86, 128, 233, 0.7) !important;
+}
+.nav-btn-container .btn-container .btn-title.arnold:hover {
+  background: rgba(86, 128, 233, 0.8) !important;
 }
 .nav-btn-container .btn-container .btn-title.helga {
   background: rgba(231, 113, 125, 0.7) !important;
 }
+.nav-btn-container .btn-container .btn-title.helga:hover {
+  background: rgba(231, 113, 125, 0.8) !important;
+}
 .nav-btn-container .btn-container .btn-title.sid {
   background: rgba(0, 155, 119, 0.7) !important;
+}
+.nav-btn-container .btn-container .btn-title.sid:hover {
+  background: rgba(0, 155, 119, 0.8) !important;
 }
 .nav-btn-container .btn-container .btn-title.phoebe {
   background: rgba(252, 205, 4, 0.7) !important;
 }
+.nav-btn-container .btn-container .btn-title.phoebe:hover {
+  background: rgba(252, 205, 4, 0.8) !important;
+}
 .nav-btn-container .btn-container .btn-title.fuzzyslippers {
   background: rgba(42, 23, 168, 0.7) !important;
+}
+.nav-btn-container .btn-container .btn-title.fuzzyslippers:hover {
+  background: rgba(42, 23, 168, 0.8) !important;
+}
+/* Horizonal View */
+.horizontal-view {
+  width: 100%;
+  overflow-y: hidden;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 /* Scroll Bar */
 ::-webkit-scrollbar-track {
@@ -541,6 +589,7 @@ html {
 }
 ::-webkit-scrollbar {
   width: 7px;
+  height: 7px;
   background-color: rgba(50, 50, 50, 0.1);
 }
 ::-webkit-scrollbar-thumb {

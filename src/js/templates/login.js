@@ -46,7 +46,8 @@ class Login extends Component{
                         
                         // Authorize Snapshot
                         self.setState({ ctrlTxt: null });
-                        self.authSnapshot();
+                        /* [REMOVE] */
+                        //self.authSnapshot();
                     }, 500);
                 })
                 .catch((e) => {console.log(e);})
@@ -101,7 +102,8 @@ class Login extends Component{
                             setTimeout(function(){
                                 self.state.loginAttempts = self.state.loginAttempts +1;
                                 //console.log(" Attempt: ", self.state.loginAttempts, " Max: ", self.state.attemptMax);
-                                self.authSnapshot();
+                                /* [REMOVE] */
+                                //self.authSnapshot();
                             }, 500); 
                         }
                         else {

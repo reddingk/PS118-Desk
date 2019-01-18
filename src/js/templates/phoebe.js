@@ -99,7 +99,7 @@ class Phoebe extends Component{
 
                 self.setState({ sourceList: sources });
             });
-            self.initSocket();     
+            //self.initSocket();     
         }  
         catch(ex){
             console.log(" [Phoebe] Error: ", ex);
@@ -217,8 +217,8 @@ class Phoebe extends Component{
                             "filterStatus":true, 
                             "data":tmpSnapShot
                         };
-
-                        self.props.jConnect.localSock.emit('direct connection', {"sID":self.props.jUser.userId, "data":dataMsg});
+                        /* [REMOVE] */
+                        //self.props.jConnect.localSock.emit('direct connection', {"sID":self.props.jUser.userId, "data":dataMsg});
                     }, 180);
                 }
             }
