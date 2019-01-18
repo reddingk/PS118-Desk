@@ -66,7 +66,7 @@ body, html {
         background: rgba(255,255,255,0.5);
 
         .main-body {
-            padding: 2% 0px 2% 2%;
+            padding: 60px 0px 2% 2%;
         }
     }
 }
@@ -219,6 +219,22 @@ body, html {
             }
         }
     }
+
+    .grid-row { 
+        width: max-content;      
+        margin: 0 auto;               
+        font-size: 15px;
+        overflow: hidden;        
+        white-space: nowrap;        
+        
+        padding-bottom: 8.4%; 
+        &+.grid-row { margin-left:137.5px; margin-top: -8.4%; } 
+       
+        .hex {
+            display: inline-block;
+            width: 275px;             
+        }
+    }
 }
 
 /* Side Nav*/
@@ -235,8 +251,12 @@ body, html {
 /* Side Nav Btn */
 .nav-btn-container {
     height: 50px;
-    position: relative;
+    position: fixed;
     display: flex;
+    z-index: 100;
+    left:2%;
+    top:2%;
+
     .btn-container {
         display: flex;
         cursor: pointer;
@@ -272,6 +292,11 @@ body, html {
             padding: 0px 20px 0px 60px;
             border-radius: 50px;
             position: relative;
+            transition: 0.7s all ease;
+
+            &:hover {
+                margin-left: -33px;
+            }
 
             &::before {
                 content:"";
@@ -284,16 +309,24 @@ body, html {
                 background: rgba(154,154,154,0.5);
             }
 
-            &.gerald { .gerald(background, 0.7); }
-            &.arnold { .arnold(background, 0.7); }
-            &.helga { .helga(background, 0.7); }
-            &.sid { .sid(background, 0.7); }
-            &.phoebe { .phoebe(background, 0.7); }
-            &.fuzzyslippers { .fuzzyslippers(background, 0.7); }
+            &.gerald { .gerald(background, 0.7); &:hover { .gerald(background, 0.8); }}
+            &.arnold { .arnold(background, 0.7); &:hover { .arnold(background, 0.8); }}
+            &.helga { .helga(background, 0.7); &:hover { .helga(background, 0.8); }}
+            &.sid { .sid(background, 0.7); &:hover { .sid(background, 0.8); }}
+            &.phoebe { .phoebe(background, 0.7); &:hover { .phoebe(background, 0.8); }}
+            &.fuzzyslippers { .fuzzyslippers(background, 0.7); &:hover { .fuzzyslippers(background, 0.8); }}
         }
     }
 }
 
+/* Horizonal View */
+.horizontal-view {
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: auto;
+    white-space: nowrap;       
+    .horizontal-container {}
+}
 
 /* Scroll Bar */
 ::-webkit-scrollbar-track {
@@ -303,7 +336,8 @@ body, html {
 }
 
 ::-webkit-scrollbar {
-	width: 7px;
+    width: 7px;
+    height: 7px;    
 	background-color: rgba(50,50,50,0.1);
 }
 
