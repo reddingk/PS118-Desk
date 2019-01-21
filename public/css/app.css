@@ -112,13 +112,18 @@
 }
 .arnold-body .hex .hexBody .hex-body-container .hex-inner-container {
   position: relative !important;
+  padding: 5px;
 }
 .arnold-body .hex .hexBody .hex-body-container .hex-inner-container * {
   position: relative;
 }
+.arnold-body .hex .hexBody .hex-body-container .hex-inner-container.full {
+  height: 100%;
+}
 .arnold-body .hex .hexBody .hex-body-container .hex-inner-container .txt-line {
   display: block;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
+  white-space: pre-line;
 }
 .arnold-body .hex .hexBody .hex-body-container .hex-inner-container .txt-line span + span {
   margin-left: 7px;
@@ -143,6 +148,59 @@
   background: rgba(255, 255, 255, 0.8);
 }
 .arnold-body .hex .hexBody .hex-body-container .hex-inner-container .battery-icon .statusVal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000000;
+  font-weight: bold;
+}
+.arnold-body .hex .hexBody .hex-body-container .hex-inner-container .arnoldGauge {
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+}
+.arnold-body .hex .hexBody .hex-body-container .hex-inner-container .arnoldLegend {
+  position: absolute;
+  top: 70%;
+  left: 60%;
+  transform: translate(-60%, -70%);
+}
+.arnold-body .hex .hexBody .hex-body-container .hex-inner-container .dropTbl {
+  padding: 20px 10% 0px;
+}
+.arnold-body .hex .hexBody .hex-body-container .hex-inner-container .dropTbl .dropRow .dropTitle {
+  font-weight: bold;
+  border-radius: 15px;
+  background-image: linear-gradient(to right, rgba(200, 200, 200, 0.4) 60%, rgba(255, 255, 255, 0));
+}
+.arnold-body .hex .hexBody .hex-body-container .hex-inner-container .dropTbl .dropRow .dropIp {
+  font-size: 0.8rem;
+}
+.arnold-body .hex .hexBody .hex-body-container .hex-inner-container .progressTbl {
+  padding: 7%;
+}
+.arnold-body .hex .hexBody .hex-body-container .hex-inner-container .progressTbl .progressRow {
+  padding: 5px;
+  display: flex;
+}
+.arnold-body .hex .hexBody .hex-body-container .hex-inner-container .progressTbl .progressRow .progressTitle {
+  font-weight: bold;
+  margin-right: 7px;
+}
+.arnold-body .hex .hexBody .hex-body-container .hex-inner-container .progressTbl .progressRow .progressContainer {
+  flex: 1;
+  background: rgba(100, 100, 100, 0.5);
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+}
+.arnold-body .hex .hexBody .hex-body-container .hex-inner-container .progressTbl .progressRow .progressContainer .lvlContainer {
+  width: 2%;
+  height: 100%;
+  background: #AAC0F7;
+}
+.arnold-body .hex .hexBody .hex-body-container .hex-inner-container .progressTbl .progressRow .progressContainer .lvlVal {
   position: absolute;
   top: 50%;
   left: 50%;
