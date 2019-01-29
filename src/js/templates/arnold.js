@@ -204,18 +204,17 @@ class Arnold extends Component{
     getProgressLvl(data, type){
         var ret = 0;
         try {
-
             if(!data){
                 ret = 0;
             }
-            else if(type == "percent"){
+            else if(type === "percent"){
                 ret = (data.used / data.size)*100;
             }
             else {
                 ret = parseFloat((data.used / Math.pow(1024, 3)).toFixed(2));
             }
 
-            ret = (type == "percent" ? ret + '%' : ret);
+            ret = (type === "percent" ? ret + '%' : ret);
         }
         catch(ex){
             console.log(" [Arnold] Error: ", ex);
@@ -274,7 +273,7 @@ class Arnold extends Component{
             // networkconnections
             if(self.state.networkConnections){
                 var establishedList = self.state.networkConnections.filter(function(item){
-                    return item.state == "ESTABLISHED";
+                    return item.state === "ESTABLISHED";
                 });
 
                 var axis4 = self.createAxis(chart, 0, self.state.networkConnections.length, 185, 265, "#AAC0F7");
