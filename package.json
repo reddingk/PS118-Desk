@@ -20,6 +20,7 @@
     "electron": "^3.0.10",
     "electron-builder": "^20.38.2",
     "electron-is-dev": "^1.0.1",
+    "immutable": "^4.0.0-rc.12",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-map-gl": "^4.0.9",
