@@ -14,9 +14,9 @@ import Gerald from './gerald';
 import FuzzySlippers from './fuzzySlippers';
 import Phoebe from './phoebe';
 import Arnold from './arnold';
+import Helga from './helga';
 
 /* JNetwork Info */
-
 class Base extends Component{
    constructor(props) {
       super(props);
@@ -36,7 +36,7 @@ class Base extends Component{
          "gerald": new characterModel("Gerald", null, <Gerald />, "Gerald home screen"),
          "fuzzyslippers": new characterModel("FuzzySlippers", null, null, "FuzzySlippers bot system"),
          "arnold": new characterModel("Arnold", null, <Arnold />, "Arnold client system info"),
-         "helga" : new characterModel("Helga", null, null, "Helga maps system"),
+         "helga" : new characterModel("Helga", null, <Helga jConnect={this.props.jConnect} jUser={this.props.jUser}/>, "Helga maps system"),
          "phoebe": new characterModel("Phoebe", null, <Phoebe jConnect={this.props.jConnect} jUser={this.props.jUser}/>, "Phoebe image processing"),
          "sid"   : new characterModel("Sid", null, null, "Sid events and information")
       };
