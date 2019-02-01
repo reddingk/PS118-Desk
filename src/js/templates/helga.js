@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {StaticMap} from 'react-map-gl';
 import DeckGL, {PolygonLayer} from 'deck.gl';
 import {fromJS} from 'immutable';
+import socketIOClient from 'socket.io-client';
+import HelgaSearch from './components/helgaSearch';
 
 import MAP_STYLE from './resources/helga-v1.json';
 const MAPBOX_TOKEN = 'pk.eyJ1IjoicmVkZGluZ2siLCJhIjoiY2pyZDMwcTBoMG5scjN5cHNudDdoZ3RrdCJ9.5_Z7l1uC7vobSJOh3c9oUg';
@@ -18,6 +20,7 @@ class Helga extends Component{
         this.state = {
             defaultMapStyle: fromJS(MAP_STYLE)            
         }
+        this.jadaQuery = this.jadaQuery.bind(this);
     }
 
     
@@ -30,7 +33,7 @@ class Helga extends Component{
                     <DeckGL layers={this._renderLayers()} initialViewState={INITIAL_VIEW_STATE}  viewState={viewState} controller={controller}>
                         {baseMap && (
                             <StaticMap reuseMaps mapStyle={this.state.defaultMapStyle} preventStyleDiffing={true} mapboxApiAccessToken={MAPBOX_TOKEN}>
-                                <div className="searchDemo"></div>
+                                <HelgaSearch searchQuery={this.jadaQuery}/>
                             </StaticMap>
                         )}
                     </DeckGL>
@@ -41,7 +44,13 @@ class Helga extends Component{
 
     componentDidMount(){
         let self = this; 
-        self._animate();      
+        try {
+            self._animate();      
+            //self.initSocket();
+        }
+        catch(ex){
+            console.log(" [Helga] Error: ", ex);
+        }
     }
 
     componentWillUnmount() {
@@ -49,7 +58,43 @@ class Helga extends Component{
           window.cancelAnimationFrame(this._animationFrame);
         }
     }
-    
+    /* Socket */
+    initSocket(){
+        var self = this;
+        try {
+            if(self.props.jConnect.localSock == null){
+                var socketQuery = "userid="+ self.props.jUser.userId +"&token="+self.props.jUser.token;
+
+                self.props.jConnect.localSock = socketIOClient(self.props.jConnect.coreUrlBase, {query: socketQuery});                
+                // On socket connection
+                self.props.jConnect.localSock.on('jada', function(res){
+                    console.log(" [Helga] Received Map Connection"); 
+                    console.log(res);
+                    //var tmpId = (res.rID ? res.rID : "NA");                      
+                });
+            }            
+        }
+        catch(ex){
+            console.log("Error starting sock connection: ", ex);
+        }
+    }
+
+    jadaQuery(query){
+        var self = this;
+        try {
+            console.log("Searching Query: ", query);
+            var dataMsg = {
+                "rId":self.props.jUser.userId,                  
+                "input":query
+            };
+            /* [REMOVE] */
+            //self.props.jConnect.localSock.emit('jada', dataMsg);                 
+        }
+        catch(ex){
+            console.log(" [Helga] Error: ", ex);
+        }        
+    }
+
     _animate() {
         const {
           loopLength = 1800, // unit corresponds to the timestamp in source data

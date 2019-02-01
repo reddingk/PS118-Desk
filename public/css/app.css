@@ -362,15 +362,42 @@
   height: 100%;
   border: 2px solid rgba(255, 255, 255, 0.7);
 }
-.helga-body .map-container .searchDemo {
+.helga-body .map-container .searchContainer {
   width: 80%;
-  height: 30px;
   position: absolute;
   bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(231, 113, 125, 0.7) !important;
   border-radius: 50px;
+  display: flex;
+  padding: 5px 20px;
+  z-index: 100;
+  box-shadow: inset 0px 0px 20px 1px rgba(0, 0, 0, 0.5);
+}
+.helga-body .map-container .searchContainer .jadaIcon {
+  margin-right: 7px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  padding: 0 6px;
+  color: #ffffff;
+  font-weight: bold;
+}
+.helga-body .map-container .searchContainer .helgatextbox {
+  flex-grow: 1;
+}
+.helga-body .map-container .searchContainer .helgatextbox input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0);
+  border: none;
+  color: #ffffff;
+}
+.helga-body .map-container .searchContainer .helgatextbox input::placeholder {
+  color: #c8c8c8;
+  opacity: 0.8;
+}
+.helga-body .map-container .searchContainer .helgatextbox input:focus {
+  outline: none;
 }
 body,
 html {
