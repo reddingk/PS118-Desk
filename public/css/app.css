@@ -355,10 +355,10 @@
   margin-top: 10px;
 }
 .helga-body {
-  padding: 7%;
+  padding: 3%;
+  flex-grow: 1;
 }
 .helga-body .map-container {
-  width: 100%;
   height: 100%;
   border: 2px solid rgba(255, 255, 255, 0.7);
 }
@@ -427,6 +427,8 @@ html {
 }
 .ps118-body .content-body .main-body {
   padding: 60px 0px 2% 2%;
+  flex-grow: 1;
+  display: flex;
 }
 /* Hex Object */
 .hex {
