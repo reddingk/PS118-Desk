@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import socketIOClient from 'socket.io-client';
+import PhoebeSearch from './components/phoebeSearch';
+
+/* Icons */
+import masks from '../../assets/imgs/icons/theater-masks-solid.svg';
+import markMasks from '../../assets/imgs/icons/mask-solid.svg';
+import edgeLine from '../../assets/imgs/icons/draw-polygon-solid.svg';
 
 const electron = window.require('electron');
 const desktopCapturer = electron.desktopCapturer;
@@ -16,7 +22,7 @@ class Phoebe extends Component{
             videoFilter: 'live'
         }
 
-        this.filterList = {"faceRecognition":true, "faceMark": true, "edgeDetect":true};
+        this.filterList = {"faceRecognition":{"icon":masks}, "faceMark": {"icon":markMasks}, "edgeDetect":{"icon":edgeLine}};
         this.liveVideo = null;
         this.liveSnapshot = null;
 
@@ -76,12 +82,8 @@ class Phoebe extends Component{
                     </div>
                 </div>
 
-                <div className="phoebe-ctrl filter-ctrl">
-                    <div className="ctrl-container">
-                        {Object.keys(this.filterList).map((item, i) =>
-                            <div className={"ctrl-item" + (this.state.videoFilter === item ? " active" : "")} key={i}onClick={() => this.toggleSnapShot(item)}>{item}</div>
-                        )}
-                    </div>
+                <div className="phoebe-ctrl filter-ctrl">                    
+                    <PhoebeSearch videoFilter={this.state.videoFilter} filterList={this.filterList} toggleSnapShot={this.toggleSnapShot}/>
                 </div>    
             </div>
         );        
@@ -99,7 +101,7 @@ class Phoebe extends Component{
 
                 self.setState({ sourceList: sources });
             });
-            //self.initSocket();     
+            self.initSocket();     
         }  
         catch(ex){
             console.log(" [Phoebe] Error: ", ex);
@@ -218,7 +220,7 @@ class Phoebe extends Component{
                             "data":tmpSnapShot
                         };
                         /* [REMOVE] */
-                        //self.props.jConnect.localSock.emit('direct connection', {"sID":self.props.jUser.userId, "data":dataMsg});
+                        self.props.jConnect.localSock.emit('direct connection', {"sID":self.props.jUser.userId, "data":dataMsg});
                     }, 180);
                 }
             }

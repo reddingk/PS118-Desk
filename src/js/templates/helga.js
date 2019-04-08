@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 //import {StaticMap} from 'react-map-gl';
-import MapGL, {Marker, Popup, NavigationControl} from 'react-map-gl';
+import MapGL, {Marker, FlyToInterpolator} from 'react-map-gl';
 
 import DeckGL, {PolygonLayer} from 'deck.gl';
 import {fromJS} from 'immutable';
 import socketIOClient from 'socket.io-client';
 import HelgaSearch from './components/helgaSearch';
 import HelgaCityPin from './components/helgaCityPin';
+import LoadSpinner from './components/loadSpinner';
 
 import MAP_STYLE from './resources/helga-v1.json';
 const MAPBOX_TOKEN = 'pk.eyJ1IjoicmVkZGluZ2siLCJhIjoiY2pyZDMwcTBoMG5scjN5cHNudDdoZ3RrdCJ9.5_Z7l1uC7vobSJOh3c9oUg';
@@ -19,10 +20,11 @@ class Helga extends Component{
             viewport: {
                 latitude: 38.9977548,
                 longitude: -77.0902091,
-                zoom: 3.5,
+                zoom: 10,
                 bearing: 0,
                 pitch: 45
             },
+            loading: false,
             cities:[]          
         }
         this.defaultMapStyle = fromJS(MAP_STYLE);
@@ -39,6 +41,7 @@ class Helga extends Component{
                     <MapGL {...viewport} width="100%" height="100%" mapStyle={this.defaultMapStyle} onViewportChange={this._updateViewport} mapboxApiAccessToken={MAPBOX_TOKEN} >
                         { this.state.cities.map(this._renderCityMarker) }
                         <HelgaSearch searchQuery={this.jadaQuery}/>
+                        { this.state.loading && <LoadSpinner userClass="helga" /> }
                     </MapGL>
                 </div>                
             </div>
@@ -71,8 +74,6 @@ class Helga extends Component{
                 self.props.jConnect.localSock = socketIOClient(self.props.jConnect.coreUrlBase, {query: socketQuery});                
                 // On socket connection
                 self.props.jConnect.localSock.on('jada', function(res){
-                    console.log(" [Helga] Received Map Connection"); 
-                    console.log(res);
                     self._displayMapData(res.data);                      
                 });
             }            
@@ -85,13 +86,9 @@ class Helga extends Component{
     jadaQuery(query){
         var self = this;
         try {
-            console.log("Searching Query: ", query);
-            var dataMsg = {
-                "rID":self.props.jUser.userId,   
-                "type":"phrase", 
-                "input":query
-            };
+            var dataMsg = {"rID":self.props.jUser.userId, "type":"phrase", "input":query };
 
+            self.setState({loading: true});
             /* [REMOVE] */
             self.props.jConnect.localSock.emit('jada', dataMsg);                 
         }
@@ -124,9 +121,17 @@ class Helga extends Component{
                         });  
                     }                  
                 });
+                self.setState({cities: pointList, loading:false});   
+                
+                // Set Zoom Loc
+                var zoomLoc = {"lat":0, "lng":0};
 
-                console.log("Set City List: ", pointList);
-                self.setState({cities: pointList});                
+                pointList.forEach(function(item){
+                    zoomLoc.lng = zoomLoc.lng + item.longitude;
+                    zoomLoc.lat = zoomLoc.lat + item.latitude;
+                });
+
+                self._goToViewport({latitude:zoomLoc.lat/pointList.length, longitude: zoomLoc.lng/pointList.length, zoom: (pointList.length > 1 ? 4 : 11)});
             }
         }
         catch(ex){
@@ -144,6 +149,19 @@ class Helga extends Component{
           </Marker>
         );
     }
+
+    _onViewportChange = viewport => this.setState({
+        viewport: {...this.state.viewport, ...viewport}
+    });
+
+    _goToViewport = ({longitude, latitude, zoom}) => {
+        this._onViewportChange({
+          longitude, latitude, zoom,
+          transitionInterpolator: new FlyToInterpolator(),
+          transitionDuration: 3000
+        });
+    };
+    
 
     _updateViewport = (viewport) => {
         this.setState({ viewport });

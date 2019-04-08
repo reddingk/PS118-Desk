@@ -11,7 +11,7 @@ class HelgaSearch extends Component{
         }        
         this._handleInputChange = this._handleInputChange.bind(this);
         this._handleKeyPress = this._handleKeyPress.bind(this);
-    }  
+    }      
 
     render(){        
         return(

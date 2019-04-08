@@ -9,6 +9,10 @@
             .ctrl-container { justify-content: space-around;}
         }
 
+        &.src-ctrl {
+            .ctrl-container { max-width: 830px; }
+        }
+
         .ctrl-live {
             border-radius: 50%;
             display: flex;
@@ -37,6 +41,7 @@
             padding: 5px 30px;
             white-space: nowrap;
             box-shadow: inset 0px 0px 20px 1px rgba(0,0,0,0.5);
+            
             .ctrl-item { 
                 display: inline-block; 
                 margin: 1px 7px; 
@@ -44,6 +49,7 @@
                 transition: 0.5s all ease;
                 padding: 0px 7px;
                 border-radius: 50px;
+                &.icon { height: 25px; }
 
                 &.active { 
                     font-weight: bold; 
@@ -53,6 +59,9 @@
                 }
                 &:hover { color: @phoebe; }
             }
+
+            .icon-container { margin-right: 7px;}
+            .text-container { flex-grow: 1;}
         }
     }
 
