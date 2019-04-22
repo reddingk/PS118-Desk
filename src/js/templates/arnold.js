@@ -3,6 +3,8 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 
+import LoadSpinner from './components/loadSpinner';
+
 const { ipcRenderer } = window.require("electron");
 
 
@@ -97,7 +99,7 @@ class Arnold extends Component{
                                         <div className="hex-inner-container">                                                                                
                                             <div className="dropTbl">
                                                 {(!this.state.net ?
-                                                    <div>Loading ....</div> :
+                                                    <LoadSpinner userClass="arnold" /> :
                                                     this.state.net.filter(function(fItem){return !fItem.internal;}).map((item, i) =>
                                                         <div className="dropRow" key={i}>
                                                             <div className="dropTitle">{item.iface}</div>
@@ -120,7 +122,7 @@ class Arnold extends Component{
                                         <div className="hex-inner-container">
                                             <div className="progressTbl">
                                                 {(!this.state.fsSize ?
-                                                    <div>Loading ....</div> :
+                                                    <LoadSpinner userClass="arnold" /> :
                                                     this.state.fsSize.map((item, i) =>
                                                         <div className="progressRow" key={i}>
                                                             <div className="progressTitle">{item.fs}</div>

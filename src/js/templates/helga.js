@@ -1,42 +1,48 @@
 import React, { Component } from 'react';
-import {StaticMap} from 'react-map-gl';
+//import {StaticMap} from 'react-map-gl';
+import MapGL, {Marker, FlyToInterpolator} from 'react-map-gl';
+
 import DeckGL, {PolygonLayer} from 'deck.gl';
 import {fromJS} from 'immutable';
 import socketIOClient from 'socket.io-client';
 import HelgaSearch from './components/helgaSearch';
+import HelgaCityPin from './components/helgaCityPin';
+import LoadSpinner from './components/loadSpinner';
 
 import MAP_STYLE from './resources/helga-v1.json';
 const MAPBOX_TOKEN = 'pk.eyJ1IjoicmVkZGluZ2siLCJhIjoiY2pyZDMwcTBoMG5scjN5cHNudDdoZ3RrdCJ9.5_Z7l1uC7vobSJOh3c9oUg';
-  
-const INITIAL_VIEW_STATE = {
-    longitude: -77.0902091, latitude: 38.9977548,
-    zoom: 11, maxZoom: 16, pitch: 45, bearing: 0
-};
 
 class Helga extends Component{
     constructor(props) {
         super(props);
 
         this.state = {
-            defaultMapStyle: fromJS(MAP_STYLE)            
+            viewport: {
+                latitude: 38.9977548,
+                longitude: -77.0902091,
+                zoom: 10,
+                bearing: 0,
+                pitch: 45
+            },
+            loading: false,
+            cities:[]          
         }
+        this.defaultMapStyle = fromJS(MAP_STYLE);
         this.jadaQuery = this.jadaQuery.bind(this);
     }
 
     
     render(){ 
-        const {viewState, controller = true, baseMap = true} = this.props;
+        const {viewport} = this.state;
 
         return(
             <div className="body-container helga-body">
                 <div className="map-container">
-                    <DeckGL layers={this._renderLayers()} initialViewState={INITIAL_VIEW_STATE}  viewState={viewState} controller={controller}>
-                        {baseMap && (
-                            <StaticMap reuseMaps mapStyle={this.state.defaultMapStyle} preventStyleDiffing={true} mapboxApiAccessToken={MAPBOX_TOKEN}>
-                                <HelgaSearch searchQuery={this.jadaQuery}/>
-                            </StaticMap>
-                        )}
-                    </DeckGL>
+                    <MapGL {...viewport} width="100%" height="100%" mapStyle={this.defaultMapStyle} onViewportChange={this._updateViewport} mapboxApiAccessToken={MAPBOX_TOKEN} >
+                        { this.state.cities.map(this._renderCityMarker) }
+                        <HelgaSearch searchQuery={this.jadaQuery}/>
+                        { this.state.loading && <LoadSpinner userClass="helga" /> }
+                    </MapGL>
                 </div>                
             </div>
         );        
@@ -45,8 +51,8 @@ class Helga extends Component{
     componentDidMount(){
         let self = this; 
         try {
-            self._animate();      
-            //self.initSocket();
+            // [REMOVE]     
+            self.initSocket();
         }
         catch(ex){
             console.log(" [Helga] Error: ", ex);
@@ -68,9 +74,7 @@ class Helga extends Component{
                 self.props.jConnect.localSock = socketIOClient(self.props.jConnect.coreUrlBase, {query: socketQuery});                
                 // On socket connection
                 self.props.jConnect.localSock.on('jada', function(res){
-                    console.log(" [Helga] Received Map Connection"); 
-                    console.log(res);
-                    //var tmpId = (res.rID ? res.rID : "NA");                      
+                    self._displayMapData(res.data);                      
                 });
             }            
         }
@@ -82,37 +86,87 @@ class Helga extends Component{
     jadaQuery(query){
         var self = this;
         try {
-            console.log("Searching Query: ", query);
-            var dataMsg = {
-                "rId":self.props.jUser.userId,                  
-                "input":query
-            };
+            var dataMsg = {"rID":self.props.jUser.userId, "type":"phrase", "input":query };
+
+            self.setState({loading: true});
             /* [REMOVE] */
-            //self.props.jConnect.localSock.emit('jada', dataMsg);                 
+            self.props.jConnect.localSock.emit('jada', dataMsg);                 
         }
         catch(ex){
             console.log(" [Helga] Error: ", ex);
         }        
     }
 
-    _animate() {
-        const {
-          loopLength = 1800, // unit corresponds to the timestamp in source data
-          animationSpeed = 30 // unit time per second
-        } = this.props;
-        const timestamp = Date.now() / 1000;
-        const loopTime = loopLength / animationSpeed;
-    
-        this.setState({
-          time: ((timestamp % loopTime) / loopTime) * loopLength
-        });
-        this._animationFrame = window.requestAnimationFrame(this._animate.bind(this));
+    _displayMapData(data){
+        var self = this;
+
+        try {
+            if(data && data.jtype == "map"){
+                var pointList = [];
+                data.jdata.results.forEach(function(country){
+                    // Country Capital
+                    if(self._chkLngLat(country.capital.coordinates)) { pointList.push({"name":country.capital.name,"type":"countryCapital", "latitude":country.capital.coordinates.lat, "longitude":country.capital.coordinates.lng}); }
+                    
+                    // State Capitals
+                    if(country.states){
+                        country.states.forEach(function(state){
+                            if(self._chkLngLat(state.capital.coordinates)) { pointList.push({"name":state.capital.name,"type":"stateCapital", "latitude":state.capital.coordinates.lat, "longitude":state.capital.coordinates.lng}); }
+
+                            // State Cities
+                            if(state.cities){
+                                state.cities.forEach(function(city){
+                                    //if(_chkLngLat(city.coordinates)) { pointList.push({"name":city.name,"type":"stateCity", "latitude":city.coordinates.lat, "longitude":city.coordinates.lng}); }
+                                });
+                            }
+                        });  
+                    }                  
+                });
+                self.setState({cities: pointList, loading:false});   
+                
+                // Set Zoom Loc
+                var zoomLoc = {"lat":0, "lng":0};
+
+                pointList.forEach(function(item){
+                    zoomLoc.lng = zoomLoc.lng + item.longitude;
+                    zoomLoc.lat = zoomLoc.lat + item.latitude;
+                });
+
+                self._goToViewport({latitude:zoomLoc.lat/pointList.length, longitude: zoomLoc.lng/pointList.length, zoom: (pointList.length > 1 ? 4 : 11)});
+            }
+        }
+        catch(ex){
+            console.log(" [Helga]: error displaying map data: ", ex);
+        }
     }
 
-    _renderLayers() {
-        const {buildings = null, trips = null, trailLength = 180} = this.props;
-        return [];
+    _chkLngLat(coordinates){
+        return (coordinates.lng & coordinates.lat);
     }
+    _renderCityMarker = (city, index) => {
+        return (
+          <Marker key={`marker-${index}`} longitude={city.longitude} latitude={city.latitude} >
+            <HelgaCityPin size={20} />
+          </Marker>
+        );
+    }
+
+    _onViewportChange = viewport => this.setState({
+        viewport: {...this.state.viewport, ...viewport}
+    });
+
+    _goToViewport = ({longitude, latitude, zoom}) => {
+        this._onViewportChange({
+          longitude, latitude, zoom,
+          transitionInterpolator: new FlyToInterpolator(),
+          transitionDuration: 3000
+        });
+    };
+    
+
+    _updateViewport = (viewport) => {
+        this.setState({ viewport });
+    }
+
 }
 
 export default Helga;
