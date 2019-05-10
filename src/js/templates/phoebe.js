@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import socketIOClient from 'socket.io-client';
-import PhoebeSearch from './components/phoebeSearch';
 
 /* Icons */
 import masks from '../../assets/imgs/icons/theater-masks-solid.svg';
 import markMasks from '../../assets/imgs/icons/mask-solid.svg';
 import edgeLine from '../../assets/imgs/icons/draw-polygon-solid.svg';
+
+/* Components */
+import PhoebeSearch from './components/phoebeSearch';
+import SocketConnect from './components/socketConnect';
+var localSock = null;
 
 const electron = window.require('electron');
 const desktopCapturer = electron.desktopCapturer;
@@ -14,8 +17,7 @@ class Phoebe extends Component{
     constructor(props) {
         super(props);
 
-        this.state = {
-            jConnect: {},
+        this.state = {           
             mainSrc: null,
             sourceList:[],
             imgObj:null,
@@ -27,38 +29,37 @@ class Phoebe extends Component{
         this.liveSnapshot = null;
 
         /* Functions */
+        this.socketDeclaration = this.socketDeclaration.bind(this);
         this.toggleSnapShot = this.toggleSnapShot.bind(this);
         this.toggleLiveVideo = this.toggleLiveVideo.bind(this);
         this.changeVideoSrc = this.changeVideoSrc.bind(this);
     }
 
-    /* Socket */
-   initSocket(){
+    /* Socket */   
+    socketDeclaration(tmpSock){
         var self = this;
         try {
-            if(self.props.jConnect.localSock == null){
-                var socketQuery = "userid="+ self.props.jUser.userId +"&token="+self.props.jUser.token;
+            self.state.imgObj = document.getElementById("filterVideo");
 
-                self.props.jConnect.localSock = socketIOClient(self.props.jConnect.coreUrlBase, {query: socketQuery});
-                self.state.imgObj = document.getElementById("filterVideo");
-                // On socket connection
-                self.props.jConnect.localSock.on('direct connection', function(res){
-                    //console.log(" [Phoebe] Received Direct Connection"); 
-                    //var tmpId = (res.rID ? res.rID : "NA");  
-                    if(self.state.imgObj) {
-                        self.state.imgObj.src = res.data;
-                    }
-                });
-            }            
+            tmpSock.on('direct connection',function(res) {
+                //console.log(" [Phoebe] Received Direct Connection"); 
+                //var tmpId = (res.rID ? res.rID : "NA");  
+
+                if(self.state.imgObj) {
+                    self.state.imgObj.src = res.data;
+                }
+            });
+            localSock = tmpSock;
         }
         catch(ex){
-            console.log("Error starting sock connection: ", ex);
+            console.log("Error with socket declaration: ", ex);
         }
     }
 
     render(){        
         return(
             <div className="body-container phoebe-body">
+                <SocketConnect baseUrl={this.props.jConnect.coreUrlBase} user={this.props.jUser} socketDeclaration={this.socketDeclaration}/>
 
                 <div className="phoebe-ctrl src-ctrl">
                     <div className="ctrl-live" onClick={() => this.toggleLiveVideo(false, true)}><div className="ctrl-btn"></div></div>
@@ -100,8 +101,7 @@ class Phoebe extends Component{
                 if(sources) { sources.unshift({"name":"live", "id":0})};
 
                 self.setState({ sourceList: sources });
-            });
-            self.initSocket();     
+            });                
         }  
         catch(ex){
             console.log(" [Phoebe] Error: ", ex);
@@ -218,9 +218,8 @@ class Phoebe extends Component{
                             "filter":filter, 
                             "filterStatus":true, 
                             "data":tmpSnapShot
-                        };
-                        /* [REMOVE] */
-                        self.props.jConnect.localSock.emit('direct connection', {"sID":self.props.jUser.userId, "data":dataMsg});
+                        };                        
+                        localSock.emit('direct connection', {"sID":self.props.jUser.userId, "data":dataMsg});
                     }, 180);
                 }
             }

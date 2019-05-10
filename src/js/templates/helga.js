@@ -4,13 +4,18 @@ import MapGL, {Marker, FlyToInterpolator} from 'react-map-gl';
 
 import DeckGL, {PolygonLayer} from 'deck.gl';
 import {fromJS} from 'immutable';
-import socketIOClient from 'socket.io-client';
-import HelgaSearch from './components/helgaSearch';
-import HelgaCityPin from './components/helgaCityPin';
-import LoadSpinner from './components/loadSpinner';
 
 import MAP_STYLE from './resources/helga-v1.json';
 const MAPBOX_TOKEN = 'pk.eyJ1IjoicmVkZGluZ2siLCJhIjoiY2pyZDMwcTBoMG5scjN5cHNudDdoZ3RrdCJ9.5_Z7l1uC7vobSJOh3c9oUg';
+
+/* Components */
+import HelgaSearch from './components/helgaSearch';
+import HelgaCityPin from './components/helgaCityPin';
+import LoadSpinner from './components/loadSpinner';
+import SocketConnect from './components/socketConnect';
+var localSock = null;
+
+
 
 class Helga extends Component{
     constructor(props) {
@@ -27,6 +32,8 @@ class Helga extends Component{
             loading: false,
             cities:[]          
         }
+
+        this.socketDeclaration = this.socketDeclaration.bind(this);
         this.defaultMapStyle = fromJS(MAP_STYLE);
         this.jadaQuery = this.jadaQuery.bind(this);
     }
@@ -37,6 +44,8 @@ class Helga extends Component{
 
         return(
             <div className="body-container helga-body">
+                <SocketConnect baseUrl={this.props.jConnect.coreUrlBase} user={this.props.jUser} socketDeclaration={this.socketDeclaration}/>
+
                 <div className="map-container">
                     <MapGL {...viewport} width="100%" height="100%" mapStyle={this.defaultMapStyle} onViewportChange={this._updateViewport} mapboxApiAccessToken={MAPBOX_TOKEN} >
                         { this.state.cities.map(this._renderCityMarker) }
@@ -64,22 +73,17 @@ class Helga extends Component{
           window.cancelAnimationFrame(this._animationFrame);
         }
     }
-    /* Socket */
-    initSocket(){
+    /* Socket */    
+    socketDeclaration(tmpSock){
         var self = this;
-        try {
-            if(self.props.jConnect.localSock == null){
-                var socketQuery = "userid="+ self.props.jUser.userId +"&token="+self.props.jUser.token;
-
-                self.props.jConnect.localSock = socketIOClient(self.props.jConnect.coreUrlBase, {query: socketQuery});                
-                // On socket connection
-                self.props.jConnect.localSock.on('jada', function(res){
-                    self._displayMapData(res.data);                      
-                });
-            }            
+        try {            
+            tmpSock.on('jada', function(res){
+                self._displayMapData(res.data);                      
+            });
+            localSock = tmpSock;
         }
         catch(ex){
-            console.log("Error starting sock connection: ", ex);
+            console.log("Error with socket declaration: ", ex);
         }
     }
 
@@ -88,9 +92,8 @@ class Helga extends Component{
         try {
             var dataMsg = {"rID":self.props.jUser.userId, "type":"phrase", "input":query };
 
-            self.setState({loading: true});
-            /* [REMOVE] */
-            self.props.jConnect.localSock.emit('jada', dataMsg);                 
+            self.setState({loading: true});            
+            localSock.emit('jada', dataMsg);                 
         }
         catch(ex){
             console.log(" [Helga] Error: ", ex);

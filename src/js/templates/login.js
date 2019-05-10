@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import socketIOClient from 'socket.io-client';
+
+/* Components */
+import SocketConnect from './components/socketConnect';
+var localSock = null;
 
 class Login extends Component{
    constructor(props) {
@@ -19,6 +22,7 @@ class Login extends Component{
       this.liveVideo = null;
       this.liveSnapshot = null;
 
+      this.socketDeclaration = this.socketDeclaration.bind(this);
       this.toggleLiveVideo = this.toggleLiveVideo.bind(this);
       this.userLogin = this.userLogin.bind(this);
       this.handleInputChange = this.handleInputChange.bind(this);
@@ -40,10 +44,7 @@ class Login extends Component{
                     self.liveVideo = stream.getTracks()[0];
                     video.onloadedmetadata = (e) => video.play(); 
                     
-                    setTimeout(function(){
-                        // Initiate Socket
-                        self.initSocket();
-                        
+                    setTimeout(function(){                                               
                         // Authorize Snapshot
                         self.setState({ ctrlTxt: null });
                         /* [REMOVE] */
@@ -63,22 +64,19 @@ class Login extends Component{
    }
 
 
-   /* Socket */
-   initSocket(){
+    /* Socket */   
+    socketDeclaration(tmpSock){
         var self = this;
-        try {
-            if(self.state.loginSock == null){
-                self.state.loginSock = socketIOClient(self.props.jConnect.coreUrlBase, {query: "userid="});
-                // On socket connection
-                self.state.loginSock.on('jauth', function(res){  
-                    self.handleJAuth(res);
-                });
-            }            
+        try {           
+            tmpSock.on('jauth', function(res){  
+                self.handleJAuth(res);
+            });
+            localSock = tmpSock;
         }
         catch(ex){
-            console.log("Error starting sock connection: ", ex);
+            console.log("Error with socket declaration: ", ex);
         }
-   }
+    }
 
    handleJAuth(res){
         var self = this;
@@ -164,7 +162,7 @@ class Login extends Component{
             var tmpSnapShot = self.getSnapShot();    
             self.setState({ type: "faceMatch" });                    
             // Send Snap to Jada
-            self.state.loginSock.emit('jauth', {"type":self.state.type, "data":tmpSnapShot});
+            localSock.emit('jauth', {"type":self.state.type, "data":tmpSnapShot});
        }
        catch(ex){
             console.log("Error authenticating snapshot: ", ex);
@@ -176,7 +174,7 @@ class Login extends Component{
        try {                  
             var userData = {"userId":self.state.userId, "password":self.state.password};
             // Send User Info to Jada
-            self.state.loginSock.emit('jauth', {"type":"userLogin", "data":userData});
+            localSock.emit('jauth', {"type":"userLogin", "data":userData});
        }
        catch(ex){
         console.log("Error with user login: ", ex);
@@ -188,6 +186,8 @@ class Login extends Component{
    render(){     
       return(
          <div className="login-body">
+            <SocketConnect baseUrl={this.props.jConnect.coreUrlBase} user={this.props.jUser} socketDeclaration={this.socketDeclaration}/>
+
             <h1>Connect to Jada Network</h1>
 
             <div className="login-ctrl">
