@@ -24,7 +24,11 @@ class Phoebe extends Component{
             videoFilter: 'live'
         }
 
-        this.filterList = {"faceRecognition":{"icon":masks}, "faceMark": {"icon":markMasks}, "edgeDetect":{"icon":edgeLine}};
+        this.filterList = {
+            "faceRecognition":{"icon":masks, "title":"Facial Recog"}, 
+            "faceMark": {"icon":markMasks, "title":"Face Mark"}, 
+            "edgeDetect":{"icon":edgeLine, "title":"Edge Detection"}
+        };
         this.liveVideo = null;
         this.liveSnapshot = null;
 
@@ -70,7 +74,15 @@ class Phoebe extends Component{
                     </div>
                 </div>                
                 
-                <div className="hex-view-container">
+                <div className="view-container phoebe">
+                    <div className="phoebe-view">                      
+                        <video id="video" className={(this.state.videoFilter === 'live'? "active": "inactive")}></video>      
+                        <img id="filterVideo" className={(this.state.videoFilter !== 'live'? "active": "inactive")} alt="pheobe filtered video" src=""></img>                  
+                    </div>
+                </div>
+
+
+                {/*<div className="hex-view-container">
                     <div className="hex phoebe-view">
                         <div className="hexIn">
                             <div className="hexBody">
@@ -81,7 +93,7 @@ class Phoebe extends Component{
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>*/}
 
                 <div className="phoebe-ctrl filter-ctrl">                    
                     <PhoebeSearch videoFilter={this.state.videoFilter} filterList={this.filterList} toggleSnapShot={this.toggleSnapShot}/>

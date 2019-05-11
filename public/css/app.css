@@ -50,15 +50,16 @@
   box-shadow: inset 0px 0px 20px 1px rgba(0, 0, 0, 0.5);
 }
 .phoebe-body .phoebe-ctrl .ctrl-container .ctrl-item {
-  display: inline-block;
-  margin: 1px 7px;
+  display: inline-flex;
+  margin: 2px 7px;
   cursor: pointer;
+  border-radius: 50%;
   transition: 0.5s all ease;
-  padding: 0px 7px;
-  border-radius: 50px;
 }
-.phoebe-body .phoebe-ctrl .ctrl-container .ctrl-item.icon {
-  height: 25px;
+.phoebe-body .phoebe-ctrl .ctrl-container .ctrl-item .icon {
+  height: 15px;
+  margin-right: 5px;
+  transition: 0.5s all ease;
 }
 .phoebe-body .phoebe-ctrl .ctrl-container .ctrl-item.active {
   font-weight: bold;
@@ -69,11 +70,27 @@
 .phoebe-body .phoebe-ctrl .ctrl-container .ctrl-item:hover {
   color: #fccd04;
 }
+.phoebe-body .phoebe-ctrl .ctrl-container .ctrl-item:hover .icon path {
+  fill: #fccd04;
+}
 .phoebe-body .phoebe-ctrl .ctrl-container .icon-container {
   margin-right: 7px;
 }
 .phoebe-body .phoebe-ctrl .ctrl-container .text-container {
   flex-grow: 1;
+}
+.phoebe-body .view-container {
+  text-align: center;
+  display: block;
+  width: 100%;
+  height: calc(100% - 100px);
+  padding: 10px 0px;
+}
+.phoebe-body .view-container .phoebe-view {
+  height: 100%;
+  width: 100%;
+  border-radius: 7px;
+  background: rgba(252, 205, 4, 0.4) !important;
 }
 .phoebe-body .hex-view-container {
   text-align: center;
@@ -870,3 +887,54 @@ html {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #555;
 }
+/* Socket Connection Display */
+.sc-container {
+  position: fixed;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 7px 21px;
+  background-color: #646464;
+  color: #000000;
+  font-weight: bold;
+  text-transform: capitalize;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  transition: 3s top ease-in-out;
+}
+.sc-container.status-0 {
+  background-color: #c14b4b;
+  top: 0;
+}
+.sc-container.status-1 {
+  background-color: #50c14b;
+}
+.sc-container.status-2 {
+  background-color: #c1864b;
+  top: 0;
+}
+.sc-container.status-3 {
+  background-color: #c1c14b;
+  top: 0;
+}
+.sc-container .sc-item {
+  display: inline-block;
+}
+.sc-container .sc-item + .sc-item {
+  margin-left: 10px;
+}
+.sc-container .sc-item.sc-retry-btn {
+  margin-left: 15px;
+  padding: 2px 14px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.sc-container .sc-item.sc-retry-btn:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+.sc-container .sc-item.sc-retry-btn span {
+  margin-left: 7px;
+}
+/* End Socket Connection Display */

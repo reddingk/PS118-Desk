@@ -12,13 +12,15 @@ class PhoebeSearch extends Component{
         this.toggleSnapShot = this.toggleSnapShot.bind(this);      
     }      
 
-
     render(){        
         return(
             <div className="ctrl-container">
                 <div className="icon-container">
                     {Object.keys(this.state.filterList).map((item, i) =>
-                        <img className={"ctrl-item icon" + (this.props.videoFilter === item ? " active" : "")} src={this.state.filterList[item].icon} key={i} onClick={() => this.toggleSnapShot(item)} />
+                        <div className="ctrl-item">
+                            <img className={"icon" + (this.props.videoFilter === item ? " active" : "")} src={this.state.filterList[item].icon} alt="search icon" key={i} onClick={() => this.toggleSnapShot(item)} />
+                            <span>{this.state.filterList[item].title}</span>
+                        </div>
                     )}
                 </div>
                 <div className="text-container"></div>

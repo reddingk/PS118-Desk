@@ -1,4 +1,10 @@
 import React, { Component } from 'react';
+/* Components */
+import HelgaSearch from './components/helgaSearch';
+import HelgaCityPin from './components/helgaCityPin';
+import LoadSpinner from './components/loadSpinner';
+import SocketConnect from './components/socketConnect';
+
 //import {StaticMap} from 'react-map-gl';
 import MapGL, {Marker, FlyToInterpolator} from 'react-map-gl';
 
@@ -6,16 +12,9 @@ import DeckGL, {PolygonLayer} from 'deck.gl';
 import {fromJS} from 'immutable';
 
 import MAP_STYLE from './resources/helga-v1.json';
+
 const MAPBOX_TOKEN = 'pk.eyJ1IjoicmVkZGluZ2siLCJhIjoiY2pyZDMwcTBoMG5scjN5cHNudDdoZ3RrdCJ9.5_Z7l1uC7vobSJOh3c9oUg';
-
-/* Components */
-import HelgaSearch from './components/helgaSearch';
-import HelgaCityPin from './components/helgaCityPin';
-import LoadSpinner from './components/loadSpinner';
-import SocketConnect from './components/socketConnect';
 var localSock = null;
-
-
 
 class Helga extends Component{
     constructor(props) {
@@ -57,16 +56,7 @@ class Helga extends Component{
         );        
     }
 
-    componentDidMount(){
-        let self = this; 
-        try {
-            // [REMOVE]     
-            self.initSocket();
-        }
-        catch(ex){
-            console.log(" [Helga] Error: ", ex);
-        }
-    }
+    componentDidMount(){}
 
     componentWillUnmount() {
         if (this._animationFrame) {
@@ -104,7 +94,7 @@ class Helga extends Component{
         var self = this;
 
         try {
-            if(data && data.jtype == "map"){
+            if(data && data.jtype === "map"){
                 var pointList = [];
                 data.jdata.results.forEach(function(country){
                     // Country Capital

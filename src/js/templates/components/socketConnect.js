@@ -30,7 +30,7 @@ class SocketConnect extends Component{
             <div className={"sc-container status-" +  this.state.status}>
                 <i className={"sc-item sc-icon " + this.state.statusIcon}></i>
                 <div className="sc-item sc-text">Connection Status: {this.state.statusText}</div>
-                {(this.state.status == 0 || this.state.status == 2) &&
+                {(this.state.status === 0 || this.state.status === 2) &&
                     <div className="sc-item sc-retry-btn" onClick={this.initSocket}><i className="fas fa-redo"></i><span>Retry</span></div>
                 }
             </div>
@@ -48,8 +48,7 @@ class SocketConnect extends Component{
         }
     }
 
-    setConnectionView(){
-        var self = this;        
+    setConnectionView(){     
         try {
             switch(this.state.status){
                 case 0:
@@ -63,6 +62,8 @@ class SocketConnect extends Component{
                     break;
                 case 3:
                     this.setState({ statusText: "reconnecting", statusIcon: "fas fa-sync fa-spin"});
+                    break;
+                default:
                     break;
             }
         }
