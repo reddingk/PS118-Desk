@@ -1,0 +1,84 @@
+.sidenav-container { 
+    width: 250px;
+    padding: 15px;
+    color: rgba(255,255,255,1);
+
+    .nav-list {
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            .list-item {
+                margin-bottom: 10px;
+                &.disable { pointer-events: none; opacity: 0.2;}
+
+                .item-grid {
+                    position: relative;
+                    display: flex;
+                    flex-direction: row;
+                    border-radius: 50px;
+                    padding: 0px 7px;
+                    background-color: rgba(0,0,0,0);
+                    transition: 0.5s all ease-in-out;
+                    cursor: pointer;
+
+                    .list-img-container { 
+                        height: 30px; 
+                        overflow: hidden; 
+                        margin-right: 10px; 
+                        height: 30px;
+                        width: 30px;        
+                        border-radius: 50%;
+                        position: relative;
+                        padding: 1px;
+                        &:before { 
+                            content:'';
+                            z-index:0;
+                            background: rgba(0,0,0,0.7);
+                            border-radius: 50%;
+                            height: 70%;
+                            width: 70%;
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            transition: 0.7s all ease-in-out;
+                        }
+                        img { position: relative; z-index:1; height: 100%;}
+                    }
+                    .list-name { display: flex; flex-direction: column; justify-content: center; color: rgba(255,255,255,1); text-transform: capitalize;}
+
+                    /* Gerald */
+                    &.gerald-grid { 
+                        .list-img-container { &:before { .gerald(background, 0.7);}}          
+                        &:hover, &.flip { background-color: @gerald;}                        
+                    }
+                    /* Arnold */
+                    &.arnold-grid {
+                        .list-img-container { &:before { .arnold(background, 0.7);}}
+                        &:hover, &.flip { background-color: @arnold;}
+                    }
+                    /* helga */
+                    &.helga-grid {
+                        .list-img-container { &:before { .helga(background, 0.7);}}
+                        &:hover, &.flip { background-color: @helga;}
+                    }
+                    /* phoebe */
+                    &.phoebe-grid {
+                        .list-img-container { &:before { .phoebe(background, 0.7);}}
+                        &:hover, &.flip { background-color: @phoebe;}
+                    }
+                    /* sid */
+                    &.sid-grid {
+                        .list-img-container { &:before { .sid(background, 0.7);}}
+                        &:hover, &.flip { background-color: @sid;}
+                    }
+                    /* fuzzyslippers */
+                    &.fuzzyslippers-grid {   
+                        .list-img-container { &:before { .fuzzyslippers(background, 0.7);}}                    
+                        &:hover, &.flip { background-color: @fuzzyslippers;}
+                    }                   
+                }
+            }
+        }
+    }
+}

@@ -24,7 +24,6 @@ class SideNavBtn extends Component{
                         <div className={'charater-icon '+ this.state.character.name.toLowerCase() }>
                             <img className="icon-img" alt={this.state.character.name.toLowerCase() + "-btn"} src={require('../../../assets/imgs/' + this.state.character.images[1])}></img>                        
                         </div>
-                        <div className={'btn-title ' + this.state.character.name.toLowerCase()}><span>{ this.state.character.name }</span></div>
                     </div>
                 }
             </div>

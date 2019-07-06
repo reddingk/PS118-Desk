@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class GeraldSideNav extends Component{
+class Ps118SideNav extends Component{
     constructor(props) {
         super(props);
 
@@ -25,13 +25,12 @@ class GeraldSideNav extends Component{
     render(){        
         var listItems = this.state.characterList.map(function(item, i) {            
             return (
-                <div key={item.name} className={ 'hex '+ (item.bodyComponent == null ? 'disable' : '') } onClick={() => this.changeSelectedChar(item.name)}>
-                    <div className="hexIn">
-                        <div className={ 'hexBody grid '+ item.name.toLowerCase()+'-grid'}>
-                            <div className="hex-body-container">
-                                <img className="grid-img" alt={ item.name.toLowerCase() + " nav-btn"} src={require('../../assets/imgs/' + item.images[0])}></img>
-                            </div>
+                <div key={i} className={ 'list-item '+ (item.bodyComponent == null ? 'disable' : '') } onClick={() => this.changeSelectedChar(item.name)}>
+                    <div className={ 'item-grid '+ item.name.toLowerCase()+'-grid'}>
+                        <div className="list-img-container">
+                            <img className="list-img" alt={ item.name.toLowerCase() + " nav-btn"} src={require('../../assets/imgs/' + item.images[0])}></img>
                         </div>
+                        <div className="list-name"><span>{item.name.toLowerCase()}</span></div>
                     </div>
                 </div>
             );
@@ -39,10 +38,10 @@ class GeraldSideNav extends Component{
 
         return(
             <div className="sidenav-container">
-                <div className="header">Gerald Nav</div>
+                <div className="header">Welcome</div>
                 <div className="nav-content">
-                    <div className="hex-grid">
-                        <div className="grid-container">
+                    <div className="nav-list">
+                        <div className="list-container">
                             { listItems }
                         </div>
                     </div>
@@ -57,4 +56,4 @@ class GeraldSideNav extends Component{
     }
 }
 
-export default GeraldSideNav;
+export default Ps118SideNav;

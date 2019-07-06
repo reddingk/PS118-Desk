@@ -4,9 +4,9 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 
 import LoadSpinner from './components/loadSpinner';
+import JSearch from './components/jSearch';
 
 const { ipcRenderer } = window.require("electron");
-
 
 am4core.useTheme(am4themes_animated);
 
@@ -38,6 +38,7 @@ class Arnold extends Component{
     render(){        
         return(
             <div className="body-container arnold-body">
+                <JSearch character={"arnold"}/>
                 <div className="horizontal-view hex-grid">                    
                     <div className="grid-row"> 
                         {/* System Information*/}                         

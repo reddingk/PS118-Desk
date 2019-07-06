@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import "../css/app.less";
 
 /* Components */
+import CircuitBack from './templates/components/circuitBack';
 import Base from './templates/base';
 import Login from './templates/login';
 
@@ -41,6 +42,7 @@ class App extends Component{
    render(){     
       return(
          <div className="ps118-body">
+            <CircuitBack />
             <div className="content-body">
                { (!this.state.jUser || !this.state.jUser.token ? 
                   <Login jConnect={this.jConnect} jUser={this.state.jUser} userHandler={this.userHandler}/> : 

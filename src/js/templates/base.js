@@ -9,9 +9,9 @@ import "../../css/app.less";
 
 /* Components */
 import SideNavBtn from './components/sideNavBtn';
-import GeraldSideNav from './geraldSidnav';
+import Ps118SideNav from './ps118SideNav';
 import Gerald from './gerald';
-import FuzzySlippers from './fuzzySlippers';
+//import FuzzySlippers from './fuzzySlippers';
 import Phoebe from './phoebe';
 import Arnold from './arnold';
 import Helga from './helga';
@@ -76,7 +76,7 @@ class Base extends Component{
    render(){     
       return(
         <div>
-            <Sidebar sidebar={<GeraldSideNav characterList={this.characterList} selectedChar={this.state.selectedChar} changeSelectedChar={this.changeSelectedChar} />}  open={this.state.sidebarOpen} onSetOpen={this.onSetSidebarOpen} styles={{ sidebar: { background: "rgba(50,50,50,0.95)", zIndex: 1000 }, content:{ display: "flex"} }}>
+            <Sidebar sidebar={<Ps118SideNav characterList={this.characterList} selectedChar={this.state.selectedChar} changeSelectedChar={this.changeSelectedChar} />}  open={this.state.sidebarOpen} onSetOpen={this.onSetSidebarOpen} shadow={false} styles={{ sidebar: { background: "linear-gradient(to right, rgba(58, 62, 72,0.9), rgba(0,0,0,0) 75%)", minWidth:'70%', zIndex: 1000 }, content:{ display: "flex"} }}>
                 <div className="main-body">                     
                     <SideNavBtn characterList={this.characterList} selectedChar={this.state.selectedChar} onSetSidebarOpen={this.onSetSidebarOpen}/>                                      
                     { this.renderSwitch(this.state.selectedChar)}
@@ -89,7 +89,7 @@ class Base extends Component{
    componentDidMount(){
       this.changeSelectedChar("gerald");
       /* [REMOVE] */
-      this.joinNetwork();
+      //this.joinNetwork();
    }
 
   /* jNetwork Functions */
