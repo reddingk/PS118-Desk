@@ -549,6 +549,9 @@
   width: 100%;
   background: #646464;
   border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .jada-body-container .jada-search-container.gerald {
   background: rgba(230, 38, 37, 0.7) !important;
@@ -567,6 +570,39 @@
 }
 .jada-body-container .jada-search-container.fuzzyslippers {
   background: rgba(42, 23, 168, 0.7) !important;
+}
+.jada-body-container .jada-search-container .jsearch-components {
+  display: flex;
+  flex-direction: row;
+  padding: 0px 10px;
+}
+.jada-body-container .jada-search-container .jsearch-components .jsearch-btn {
+  position: relative;
+  border-radius: 50%;
+  height: 27px;
+  width: 27px;
+  overflow: hidden;
+  transition: 0.3s all ease-in-out;
+  cursor: pointer;
+  -moz-box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+}
+.jada-body-container .jada-search-container .jsearch-components .jsearch-btn:hover {
+  background: rgba(18, 22, 32, 0.7);
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.jada-body-container .jada-search-container .jsearch-components .jsearch-btn img {
+  width: 80%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.jada-body-container .jada-search-container .jsearch-components .jsearch-btn + .jsearch-btn {
+  margin-left: 10px;
 }
 body,
 html {
