@@ -351,6 +351,9 @@ body, html {
         animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
     }
 
+    &.background { border-top-color: @background;}
+    &.phoebe { border-top-color: @phoebe;}
+    &.gerald { border-top-color: @gerald;}
     &.helga { border-top-color: @helga;}
     &.arnold { border-top-color: @arnold;}
 }
@@ -411,7 +414,8 @@ body, html {
 /* Socket Connection Display */
 .sc-container {
     position: fixed;
-    top: -40px;
+    z-index: 100;
+    bottom: -20%;
     left: 50%;
     transform: translateX(-50%);
     padding: 7px 21px;
@@ -419,14 +423,13 @@ body, html {
     color: rgba(0,0,0,1);
     font-weight: bold;  
     text-transform: capitalize;
-    border-bottom-left-radius: 5px;   
-    border-bottom-right-radius: 5px;   
+    border-radius: 5px;     
     transition: 3s top ease-in-out;
 
-    &.status-0 { background-color: rgba(193, 75, 75,1); top: 0;}
+    &.status-0 { background-color: rgba(193, 75, 75,1); bottom: 10px;}
     &.status-1 { background-color: rgba(80, 193, 75,1); }
-    &.status-2 { background-color: rgba(193, 134, 75,1); top: 0;}
-    &.status-3 { background-color: rgba(193, 193, 75,1); top: 0;}
+    &.status-2 { background-color: rgba(193, 134, 75,1); bottom: 10px;}
+    &.status-3 { background-color: rgba(193, 193, 75,1); bottom: 10px;}
     
     .sc-item { 
         display: inline-block;

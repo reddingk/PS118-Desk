@@ -1,28 +1,28 @@
 .phoebe-body {
     margin-top: 10px;
-    padding-right: 2%;
+    width: calc(90vw - 6%);
 
-    .phoebe-ctrl {
-        display: flex;
-        &.filter-ctrl {
-            width: 100%;
-            .ctrl-container { justify-content: space-around;}
-        }
-
-        &.src-ctrl {
-            .ctrl-container { max-width: 830px; }
-        }
-
+    .view-container{
+        text-align: center;
+        display: block; 
+        width: 100%;
+        height: calc(100% - 20px);
+        padding: 10px 0px;
+        position: relative;
         .ctrl-live {
+            position: absolute;
+            top: 15px;
+            left: 5px;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             margin-right: 7px; 
             cursor: pointer;
+            z-index: 10;
             .ctrl-btn { 
                 width: 10px;
                 height: 10px;
-                background: @phoebe;
+                background: @background;
                 border-radius: 50%;
                 margin: 10px;
                 transition: 0.5s all ease;
@@ -31,51 +31,25 @@
                 .ctrl-btn { width: 30px; height: 30px; margin: 0px; }
             }
         }
-        .ctrl-container {
-            border-radius: 50px;
-            flex: 1;
-            border: 1px solid rgba(50,50,50,0.5);
-            display: flex;
-            flex-direction: row;
-            overflow-x: hidden;
-            padding: 5px 30px;
-            white-space: nowrap;
-            box-shadow: inset 0px 0px 20px 1px rgba(0,0,0,0.5);
-            
-            .ctrl-item { 
-                display: inline-flex; 
-                margin: 2px 7px; 
-                cursor: pointer;
-                border-radius: 50%;
-                transition: 0.5s all ease;
-                          
-                .icon { height: 15px; margin-right: 5px; transition: 0.5s all ease;}
-
-                &.active { 
-                    font-weight: bold; 
-                    opacity: 0.5;
-                    border-left: 2px solid @phoebe;
-                    border-right: 2px solid @phoebe;
-                }
-                &:hover { color: @phoebe; .icon path{ fill: @phoebe; }}
-            }
-
-            .icon-container { margin-right: 7px;}
-            .text-container { flex-grow: 1;}
-        }
-    }
-
-    .view-container{
-        text-align: center;
-        display: block; 
-        width: 100%;
-        height: calc(100% - 100px);
-        padding: 10px 0px;
         .phoebe-view {
             height: 100%;
             width: 100%;
             border-radius: 7px;
+            overflow: hidden;
+            position: relative;
+            z-index: 9;
             .phoebe(background, 0.4);
+
+            .phoebeLoader {
+                position: absolute;
+                top:50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            #video {
+                height: 100%;
+                max-width: 100%;
+            }
         }
     }
 

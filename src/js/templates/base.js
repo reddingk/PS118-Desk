@@ -87,7 +87,8 @@ class Base extends Component{
    }
 
    componentDidMount(){
-      this.changeSelectedChar("gerald");
+      //this.changeSelectedChar("gerald");
+      this.changeSelectedChar("phoebe");
       /* [REMOVE] */
       //this.joinNetwork();
    }

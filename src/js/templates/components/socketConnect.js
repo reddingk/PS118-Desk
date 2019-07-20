@@ -39,7 +39,7 @@ class SocketConnect extends Component{
     
     componentDidMount(){
         this.setConnectionView();
-        //this.initSocket();
+        this.initSocket();
     }
 
     componentWillUnmount() {

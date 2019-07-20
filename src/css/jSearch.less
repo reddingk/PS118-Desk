@@ -1,6 +1,7 @@
 .jada-body-container {
     width: 87%;
     position: fixed;
+    z-index: 100;
     top:0%;
     left:0;
     padding: 2% 3% 10px 9%;
@@ -38,11 +39,18 @@
                 -webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
                 box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
 
-                &:hover { 
+                &:hover:not(.selected) { 
                     background: rgba(18,22,32,0.7);
                     -moz-box-shadow: none;
                     -webkit-box-shadow: none;
                     box-shadow: none;
+                }
+                &.selected { 
+                    opacity: 0.3;
+                    -moz-box-shadow: none;
+                    -webkit-box-shadow: none;
+                    box-shadow: none;
+                    cursor: default;
                 }
 
                 img {  
@@ -54,6 +62,113 @@
                 }
 
                 &+.jsearch-btn { margin-left: 10px; }
+            }
+
+            .jsearch-input { 
+                flex:1;
+                padding: 0px 5px;
+                position: relative;
+                input { 
+                    background: rgba(0,0,0,0);
+                    outline: none;
+                    border:none;
+                    .background(background, 0.1);
+                    width: 100%;
+                    line-height: 27px;
+                    font-size:20px;
+                    color: rgba(255,255,255,0.8);
+                    border-radius: 5px;
+                }
+
+                .close-btn {
+                    position: absolute;
+                    right: 10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 13px;
+                    height: 13px;
+                    opacity: 0.3;
+                    cursor: pointer;
+                    transition: 0.5s all ease;
+                    &:before, &:after {
+                        position: absolute;
+                        left: 5px;
+                        content: ' ';
+                        height: 14px;
+                        width: 2px;
+                        background-color: #333;
+                    }
+                    &:before { transform: rotate(45deg); }
+                    &:after { transform: rotate(-45deg); }
+                    &:hover { opacity: 1; }
+                }
+            }
+        }
+    }
+
+    .jSubList-container {
+        display: flex;
+        flex-direction: row;
+        padding: 7px;
+        white-space: nowrap;
+        overflow-x: hidden;
+
+        .subPill{ 
+            background: rgba(100,100,100,1);
+            color: rgba(255,255,255,1);
+            padding: 3px 10px;
+            border-radius: 50px;
+            opacity: 0.5;
+            transition: 0.5s all ease;
+            cursor: pointer;
+            &+.subPill { margin-left: 10px; }
+            &:hover { opacity: 1;}
+        }
+
+        &.gerald { .subPill{ .gerald(background,0.7);}}
+        &.arnold { .subPill{ .arnold(background,0.7);}}
+        &.helga { .subPill{ .helga(background,0.7);}}
+        &.phoebe { .subPill{ .phoebe(background,0.7);}}
+        &.sid { .subPill{ .sid(background,0.7);}}
+        &.fuzzyslippers { .subPill{ .fuzzyslippers(background,0.7);}}
+    }
+    .jScreen {
+        position: absolute;
+        top:70px;
+        left:0;
+        width: calc(90vw - 6%);
+        height: calc(90vh - 70px);
+        .background(background,0.7);
+        padding: 10px 3% 0px;
+        .jscreenLoader {
+            position: absolute;
+            top:50%;
+            left:50%;
+            z-index: 10;
+            transform: translate(-50%,-50%);
+        }
+        .jscreen-close {
+            position: absolute;
+            top: 10px;
+            right: 3%;
+            width: 20px;
+            height: 20px;
+            opacity: 0.5;
+            transition: 0.5s all ease;
+            z-index: 11;
+            cursor: pointer;
+            img { width: 100%; object-fit: cover; }
+
+            &:hover { opacity: 1; }
+        }
+        .jscreen-container {
+            color: rgba(255,255,255,1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            .searchResults-container {
+                margin: 10px 0px;
+                .results-query { color: rgba(255,255,255,1); margin-bottom: 5px;}
             }
         }
     }

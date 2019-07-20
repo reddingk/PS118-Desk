@@ -4,10 +4,12 @@ import React, { Component } from 'react';
 import masks from '../../assets/imgs/icons/theater-masks-solid.svg';
 import markMasks from '../../assets/imgs/icons/mask-solid.svg';
 import edgeLine from '../../assets/imgs/icons/draw-polygon-solid.svg';
+import circleNotchSolid from '../../assets/imgs/icons/circle-notch-solid.svg';
 
 /* Components */
-import PhoebeSearch from './components/phoebeSearch';
+import JSearch from './components/jSearch';
 import SocketConnect from './components/socketConnect';
+import LoadSpinner from './components/loadSpinner';
 var localSock = null;
 
 const electron = window.require('electron');
@@ -21,7 +23,14 @@ class Phoebe extends Component{
             mainSrc: null,
             sourceList:[],
             imgObj:null,
-            videoFilter: 'live'
+            videoFilter: 'live',
+            phoebeLoading:false,
+            jBtns:[
+                {"icon":circleNotchSolid, "title":"Source", "type":"secondary", "dataList":[]},
+                {"icon":masks, "title":"Facial Recog", "type":"primary"},
+                {"icon":markMasks, "title":"Face Mark", "type":"primary"},
+                {"icon":edgeLine, "title":"Edge Detection", "type":"primary"}
+            ]
         }
 
         this.filterList = {
@@ -33,6 +42,7 @@ class Phoebe extends Component{
         this.liveSnapshot = null;
 
         /* Functions */
+        this.changeSearch = this.changeSearch.bind(this);
         this.socketDeclaration = this.socketDeclaration.bind(this);
         this.toggleSnapShot = this.toggleSnapShot.bind(this);
         this.toggleLiveVideo = this.toggleLiveVideo.bind(this);
@@ -64,40 +74,16 @@ class Phoebe extends Component{
         return(
             <div className="body-container phoebe-body">
                 <SocketConnect baseUrl={this.props.jConnect.coreUrlBase} user={this.props.jUser} socketDeclaration={this.socketDeclaration}/>
+                <JSearch character={"phoebe"} jbtns={this.state.jBtns} changeSearch={this.changeSearch} />
 
-                <div className="phoebe-ctrl src-ctrl">
-                    <div className="ctrl-live" onClick={() => this.toggleLiveVideo(false, true)}><div className="ctrl-btn"></div></div>
-                    <div className="ctrl-container">
-                        {this.state.sourceList.map((item, i) =>
-                            <div className={"ctrl-item" + (this.state.mainSrc === item.name ? " active" : "")} key={i}onClick={() => this.changeVideoSrc(item)}>{item.name}</div>
-                        )}
-                    </div>
-                </div>                
-                
                 <div className="view-container phoebe">
-                    <div className="phoebe-view">                      
+                    <div className="ctrl-live" onClick={() => this.toggleLiveVideo(false, true)}><div className="ctrl-btn"></div></div>
+                    <div className="phoebe-view"> 
+                        {this.state.phoebeLoading && <div className="phoebeLoader"><LoadSpinner userClass={"phoebe"} /></div>}                     
                         <video id="video" className={(this.state.videoFilter === 'live'? "active": "inactive")}></video>      
                         <img id="filterVideo" className={(this.state.videoFilter !== 'live'? "active": "inactive")} alt="pheobe filtered video" src=""></img>                  
                     </div>
-                </div>
-
-
-                {/*<div className="hex-view-container">
-                    <div className="hex phoebe-view">
-                        <div className="hexIn">
-                            <div className="hexBody">
-                                <div className="hex-body-container">
-                                    <video id="video" className={(this.state.videoFilter === 'live'? "active": "inactive")}></video>      
-                                    <img id="filterVideo" className={(this.state.videoFilter !== 'live'? "active": "inactive")} alt="pheobe filtered video" src=""></img>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>*/}
-
-                <div className="phoebe-ctrl filter-ctrl">                    
-                    <PhoebeSearch videoFilter={this.state.videoFilter} filterList={this.filterList} toggleSnapShot={this.toggleSnapShot}/>
-                </div>    
+                </div> 
             </div>
         );        
     }
@@ -112,11 +98,40 @@ class Phoebe extends Component{
                 if (error) throw error
                 if(sources) { sources.unshift({"name":"live", "id":0})};
 
-                self.setState({ sourceList: sources });
+                var tmpBtns = self.state.jBtns;
+                tmpBtns[0].dataList = sources;
+
+                self.setState({ jBtns: tmpBtns, sourceList: sources });
             });                
         }  
         catch(ex){
             console.log(" [Phoebe] Error: ", ex);
+        }
+    }
+
+    /* Change Search */
+    changeSearch(searchType, searchStr, secondaryItem){
+        try {
+            console.log(searchType,' Search: ', searchStr);
+            switch(searchType){
+                case "Source":
+                    if(secondaryItem !== null) { this.changeVideoSrc(secondaryItem)}
+                    break;
+                case "Facial Recog":                    
+                    this.toggleSnapShot("faceRecognition");
+                    break;
+                case "Face Mark":
+                    this.toggleSnapShot("faceMark");
+                    break;
+                case "Edge Detection":
+                    this.toggleSnapShot("edgeDetect");
+                    break;
+                default:
+                    break;
+            }
+        }
+        catch(ex){
+            console.log("Error Performing Search: ",ex);
         }
     }
 
@@ -150,7 +165,7 @@ class Phoebe extends Component{
         var self = this;
         try{
             if(self.liveVideo == null || !self.liveVideo.getSettings().frameRate) {
-                self.setState({ videoFilter: "live", mainSrc: "live" });
+                self.setState({ videoFilter: "live", mainSrc: "live", phoebeLoading: true });
 
                 navigator.mediaDevices.getUserMedia({
                     audio: audioSettings,
@@ -161,6 +176,8 @@ class Phoebe extends Component{
                     video.srcObject = stream;
                     self.liveVideo = stream.getTracks()[0];
                     video.onloadedmetadata = (e) => video.play(); 
+
+                    self.setState({ phoebeLoading: false });
                 })
                 .catch((e) => {console.log(e);})
             }
