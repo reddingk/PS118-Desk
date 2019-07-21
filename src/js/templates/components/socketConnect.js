@@ -43,9 +43,7 @@ class SocketConnect extends Component{
     }
 
     componentWillUnmount() {
-        if(localSock){
-            localSock.close();
-        }
+        if(localSock){ localSock.close();  }
     }
 
     setConnectionView(){     
@@ -75,6 +73,8 @@ class SocketConnect extends Component{
     initSocket(){
         var self = this;
         try{
+            if(localSock){ localSock.close();  }
+            
             var socketQuery = "userid="+ this.props.user.userId +"&token="+ this.props.user.token;
             localSock = socketIOClient(self.props.baseUrl, { 
                 query: socketQuery, 

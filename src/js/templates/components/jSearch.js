@@ -44,7 +44,7 @@ class JSearch extends Component{
                             <span className="close-btn" onClick={this.clearSearch}></span>
                         </div>
                         {this.state.components.map((item,i) => 
-                            <div className={"jsearch-btn"+(this.state.selectedsearch ===  item.title ? " selected" :"")} key={i} onClick={()=> this.changeSearch(item)}><img src={item.icon} alt="button icon"/></div>
+                            <div className={"jsearch-btn"+(this.state.selectedsearch ===  item.title ? " selected" :"")+(item.toggle ? " toggle":"")} key={i} onClick={()=> this.changeSearch(item)}><img src={item.icon} alt="button icon"/></div>
                         )}
                     </div>
                 </div>
@@ -97,6 +97,8 @@ class JSearch extends Component{
     changeSearch(item){
         var self = this;
         try {
+            var toggleBtn = (this.state.selectedsearch === item.title);
+
             this.setState({selectedsearch: item.title, searchstr:"", subList:[]}, ()=> {
                 if(item.title !== "jada"){
                     if(item.type && item.type === "primary"){
@@ -105,6 +107,10 @@ class JSearch extends Component{
                     else {
                         /* Show Data List */
                         self.setState({subList:item.dataList});
+                    }
+
+                    if(item.toggle && toggleBtn){
+                        self.setState({selectedsearch:"jada",searchstr:"", subList:[]});
                     }
                 }
             });

@@ -25,19 +25,15 @@ class Phoebe extends Component{
             imgObj:null,
             videoFilter: 'live',
             phoebeLoading:false,
+            filterList:{"faceRecognition":true, "faceMark": true, "edgeDetect":true},
             jBtns:[
-                {"icon":circleNotchSolid, "title":"Source", "type":"secondary", "dataList":[]},
-                {"icon":masks, "title":"Facial Recog", "type":"primary"},
-                {"icon":markMasks, "title":"Face Mark", "type":"primary"},
-                {"icon":edgeLine, "title":"Edge Detection", "type":"primary"}
+                {"icon":circleNotchSolid, "title":"Source", "type":"secondary", "toggle":true, "dataList":[]},
+                {"icon":masks, "title":"Facial Recog", "type":"primary", "toggle":true},
+                {"icon":markMasks, "title":"Face Mark", "type":"primary", "toggle":true},
+                {"icon":edgeLine, "title":"Edge Detection", "type":"primary", "toggle":true}
             ]
         }
 
-        this.filterList = {
-            "faceRecognition":{"icon":masks, "title":"Facial Recog"}, 
-            "faceMark": {"icon":markMasks, "title":"Face Mark"}, 
-            "edgeDetect":{"icon":edgeLine, "title":"Edge Detection"}
-        };
         this.liveVideo = null;
         this.liveSnapshot = null;
 
@@ -106,6 +102,13 @@ class Phoebe extends Component{
         }  
         catch(ex){
             console.log(" [Phoebe] Error: ", ex);
+        }
+    }
+
+    componentWillUnmount() {
+        if(this.liveVideo){
+            this.liveVideo.stop();
+            clearInterval(this.liveSnapshot);
         }
     }
 
@@ -236,7 +239,7 @@ class Phoebe extends Component{
                 }
             }
             else {
-                if(filter != null && (filter in self.filterList)){
+                if(filter != null && (filter in self.state.filterList)){
                     this.setState({ videoFilter: filter });
                     self.liveSnapshot = setInterval(function() { 
                         var tmpSnapShot = self.getSnapShot();                        

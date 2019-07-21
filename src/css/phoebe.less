@@ -46,31 +46,14 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
-            #video {
+            #filterVideo, #video {
                 height: 100%;
                 max-width: 100%;
+                object-fit: contain;
             }
-        }
-    }
 
-    .hex-view-container {
-        text-align: center;
-        .phoebe-view {
-            width: 47%;
-            display: inline-block;
-            margin: 15px 0px 12%;
-            .hexBody{
-                .phoebe(background, 0.4);
-                .hex-body-container {
-                    text-align: left;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-
-                    .active { visibility: visible; position: relative; width: 100%; z-index: 10;}
-                    .inactive { visibility: hidden; position: absolute; z-index: -1;}
-                }
-            }
+            .active { visibility: visible; position: relative; width: 100%; z-index: 10;}
+            .inactive { visibility: hidden; position: absolute; z-index: -1;}
         }
     }
 }

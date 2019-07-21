@@ -161,34 +161,19 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.phoebe-body .view-container .phoebe-view #filterVideo,
 .phoebe-body .view-container .phoebe-view #video {
   height: 100%;
   max-width: 100%;
+  object-fit: contain;
 }
-.phoebe-body .hex-view-container {
-  text-align: center;
-}
-.phoebe-body .hex-view-container .phoebe-view {
-  width: 47%;
-  display: inline-block;
-  margin: 15px 0px 12%;
-}
-.phoebe-body .hex-view-container .phoebe-view .hexBody {
-  background: rgba(252, 205, 4, 0.4) !important;
-}
-.phoebe-body .hex-view-container .phoebe-view .hexBody .hex-body-container {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.phoebe-body .hex-view-container .phoebe-view .hexBody .hex-body-container .active {
+.phoebe-body .view-container .phoebe-view .active {
   visibility: visible;
   position: relative;
   width: 100%;
   z-index: 10;
 }
-.phoebe-body .hex-view-container .phoebe-view .hexBody .hex-body-container .inactive {
+.phoebe-body .view-container .phoebe-view .inactive {
   visibility: hidden;
   position: absolute;
   z-index: -1;
@@ -567,6 +552,14 @@
   box-shadow: none;
   cursor: default;
 }
+.jada-body-container .jada-search-container .jsearch-components .jsearch-btn.toggle {
+  cursor: pointer;
+}
+.jada-body-container .jada-search-container .jsearch-components .jsearch-btn.toggle:hover {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 .jada-body-container .jada-search-container .jsearch-components .jsearch-btn img {
   width: 80%;
   position: absolute;
@@ -936,7 +929,7 @@ html {
   height: 50px;
   position: fixed;
   display: flex;
-  z-index: 100;
+  z-index: 101;
   left: 2%;
   top: 2%;
 }

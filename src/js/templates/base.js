@@ -90,7 +90,7 @@ class Base extends Component{
       //this.changeSelectedChar("gerald");
       this.changeSelectedChar("phoebe");
       /* [REMOVE] */
-      //this.joinNetwork();
+      this.joinNetwork();
    }
 
   /* jNetwork Functions */
