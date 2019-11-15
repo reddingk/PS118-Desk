@@ -14,7 +14,7 @@ import Gerald from './gerald';
 //import FuzzySlippers from './fuzzySlippers';
 import Phoebe from './phoebe';
 import Arnold from './arnold';
-import Helga from './helga';
+import Helga from './helga2';
 
 /* JNetwork Info */
 class Base extends Component{
@@ -88,9 +88,9 @@ class Base extends Component{
 
    componentDidMount(){
       //this.changeSelectedChar("gerald");
-      this.changeSelectedChar("phoebe");
+      this.changeSelectedChar("helga");
       /* [REMOVE] */
-      this.joinNetwork();
+      //this.joinNetwork();
    }
 
   /* jNetwork Functions */

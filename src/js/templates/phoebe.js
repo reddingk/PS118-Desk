@@ -12,8 +12,7 @@ import SocketConnect from './components/socketConnect';
 import LoadSpinner from './components/loadSpinner';
 var localSock = null;
 
-const electron = window.require('electron');
-const desktopCapturer = electron.desktopCapturer;
+const { desktopCapturer } = window.require('electron');
 
 class Phoebe extends Component{
     constructor(props) {
@@ -98,7 +97,7 @@ class Phoebe extends Component{
                 tmpBtns[0].dataList = sources;
 
                 self.setState({ jBtns: tmpBtns, sourceList: sources });
-            });                
+            });          
         }  
         catch(ex){
             console.log(" [Phoebe] Error: ", ex);

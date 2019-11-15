@@ -9,7 +9,7 @@ var si = require('systeminformation');
 let mainWindow;
 
 function createWindow() {
-    mainWindow = new BrowserWindow({width: 1100, height: 800, webPreferences: { webSecurity: false}});
+    mainWindow = new BrowserWindow({width: 1100, height: 800, webPreferences: { nodeIntegration: true, webSecurity: false }});
     
     mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
   

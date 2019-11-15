@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { setDefaultOptions } from 'esri-loader';
 
 /* Styles */
 import "../css/app.less";
@@ -53,7 +54,10 @@ class App extends Component{
       );
    }
 
-   componentDidMount(){}
+   componentDidMount(){
+      /* esri version */
+      setDefaultOptions({ version: '4.7' })
+   }
 }
 
 export default App;
