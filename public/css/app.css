@@ -445,13 +445,15 @@
   padding: 3%;
   flex-grow: 1;
 }
-.helga-body .arcMap {
-  width: 100%;
-  height: 100%;
-}
 .helga-body .map-container {
   height: 100%;
   border: 2px solid rgba(255, 255, 255, 0.7);
+  position: relative;
+}
+.helga-body .map-container .arcMap {
+  width: 100%;
+  height: 100%;
+  background: #191a1a;
 }
 .helga-body .map-container .searchContainer {
   width: 80%;
