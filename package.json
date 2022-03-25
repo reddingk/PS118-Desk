@@ -17,7 +17,7 @@
     "@amcharts/amcharts4": "^4.0.21",
     "concurrently": "^4.1.0",
     "deck.gl": "^6.3.9",
-    "electron": "^3.0.10",
+    "electron": "^13.6.6",
     "electron-builder": "^20.38.2",
     "electron-is-dev": "^1.0.1",
     "immutable": "^4.0.0-rc.12",
