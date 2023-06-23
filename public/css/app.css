@@ -447,7 +447,8 @@
 }
 .helga-body .map-container {
   height: 100%;
-  border: 2px solid rgba(255, 255, 255, 0.7);
+  border: 2px solid;
+  border-color: rgba(231, 113, 125, 0.7) !important;
   position: relative;
 }
 .helga-body .map-container .arcMap {
@@ -1143,6 +1144,7 @@ html {
 }
 .sc-container.status-1 {
   background-color: #50c14b;
+  display: none;
 }
 .sc-container.status-2 {
   background-color: #c1864b;

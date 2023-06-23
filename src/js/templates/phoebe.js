@@ -89,14 +89,20 @@ class Phoebe extends Component{
         let self = this;    
 
         try {
-            desktopCapturer.getSources({types: ['window', 'screen']}, (error, sources) => {
-                if (error) throw error
-                if(sources) { sources.unshift({"name":"live", "id":0})};
+            desktopCapturer.getSources({types: ['window', 'screen']}).then(async sources => {
+                //if(sources) { sources.unshift({"name":"live", "id":0})};
+                navigator.mediaDevices.enumerateDevices().then(function(devices) {
+                    var videoList = devices.filter(function(item){ return item.kind == "videoinput";}).map(function(device){
+                        return {"id":device.deviceId, "name": device.label, "type":"deviceId" };
+                    });
 
-                var tmpBtns = self.state.jBtns;
-                tmpBtns[0].dataList = sources;
+                    if(sources && videoList) { sources = videoList.concat(sources); }
 
-                self.setState({ jBtns: tmpBtns, sourceList: sources });
+                    var tmpBtns = self.state.jBtns;
+                    tmpBtns[0].dataList = sources;
+
+                    self.setState({ jBtns: tmpBtns, sourceList: sources });
+                });                
             });          
         }  
         catch(ex){
@@ -151,7 +157,13 @@ class Phoebe extends Component{
             self.state.mainSrc = newSrc.name;
             
             // toggle live with new src
-            var videoSrc = (newSrc && newSrc.name === "live" ? true : { mandatory: { chromeMediaSource: 'desktop', chromeMediaSourceId: newSrc.id}});
+            var videoSrc = (newSrc && newSrc.name === "live" ? 
+                                true : 
+                                (newSrc.type && newSrc.type == "deviceId" ? 
+                                    {deviceId: newSrc.id} :
+                                    {mandatory: { chromeMediaSource: 'desktop', chromeMediaSourceId: newSrc.id}}
+                                )
+                            );
             self.toggleLiveVideo(false, videoSrc);
 
             // if filter was on re-enable
@@ -168,6 +180,7 @@ class Phoebe extends Component{
         try{
             if(self.liveVideo == null || !self.liveVideo.getSettings().frameRate) {
                 self.setState({ videoFilter: "live", mainSrc: "live", phoebeLoading: true });
+                videoSettings = ( videoSettings == true ? { facingMode: "user" } : videoSettings);
 
                 navigator.mediaDevices.getUserMedia({
                     audio: audioSettings,
@@ -201,9 +214,9 @@ class Phoebe extends Component{
         var ret = null;
 
         try {
-            var video = document.querySelector('video'), canvas, context;
+            var video = document.querySelector('video'), shrinkSz = .5, canvas, context;
             if(video) {
-                var width = video.offsetWidth, height = video.offsetHeight;
+                var width = video.offsetWidth * shrinkSz, height = video.offsetHeight * shrinkSz;
 
                 canvas = canvas || document.createElement('canvas');
                 canvas.width = width;

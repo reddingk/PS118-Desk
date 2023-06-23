@@ -43,7 +43,7 @@ class JSearch extends Component{
                             <input type="text" name="searchstr" value={this.state.searchstr} onChange={(e) => this.handleTextChange(e)} onKeyDown={this.onKeyPress}/>
                             <span className="close-btn" onClick={this.clearSearch}></span>
                         </div>
-                        {this.state.components.map((item,i) => 
+                        {this.props.jbtns && this.props.jbtns.map((item,i) => 
                             <div className={"jsearch-btn"+(this.state.selectedsearch ===  item.title ? " selected" :"")+(item.toggle ? " toggle":"")} key={i} onClick={()=> this.changeSearch(item)}><img src={item.icon} alt="button icon"/></div>
                         )}
                     </div>
